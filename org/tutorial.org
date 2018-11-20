@@ -1,0 +1,104 @@
+* PITFALL: don't use $ in a pattern to be matched
+Because it's rigid?
+I replaced `varOf (withSub (Var v)) = v` with `varOf (withSub $ Var v) = v` and it stopped working, giving me an "evaluation suspended" error.
+* not everything is a value
+** ? it seems like anything including functions is not, and the rest is
+** the quote
+"A value is an expression consisting only of builtin literals and/or data constructors
+and/or variables."
+But I suspect everything is an expression.
+* non-determinism
+** pattern matching in Curry
+*** a gem
+ isFullHouse (x++[a]++y++[b]++z)
+   | map rank (x++y++z) == [r,r,r] && rank a == rank b
+   = Just r
+   where r free
+ isFullHouse'default _ = Nothing
+*** the concept
+ arguments in function definitions can involve functions
+**** example
+  last :: [a] -> a
+  last (_++[e]) = e
+**** narrowing is used to solve those equations
+** *Deep selection*: a pattern for traversal without explanation
+***  The following is supposed finds all the Vars buried anywhere in an Exp.
+*** the code
+ data Expr = Lit Int
+           | Var [Char]
+           | Add Expr Expr
+           | Mul Expr Expr
+
+ withSub exp = exp
+             ? op (withSub exp) unknown
+             ? op unknown (withSub exp)
+   where op = Add ? Mul
+
+ varOf :: Expr -> String
+ varOf (withSub $ Var v) = v
+
+ allVarsOf :: Expr -> SetFunctions.Values String
+ allVarsOf = SetFunctions.set1 varOf
+
+** "Set Functions" return all possible results of a function
+*** use SetFunctions.setn, where the last 'n' = the arity of the first arg
+*** example: find all subsets of a set
+ subset [] = []
+ subset (x:xs) = x:subset xs
+ subset (_:xs) = subset xs
+ powerset s = set1 subset s
+  -- powerset is the set function of subset
+*** tricky: non-determinism can still cross it
+ (set1 f v) is deterministic, even if f is deterministic, as long as v is one value. But if v is nondeterministic, so is the whole, in a way that depends entirely on v.
+** narrowing vs. residuation
+*** defs
+ Suppose expr E include logic var V, and the value of V is unknown.
+ Residuation suspends evaluation of E until another expr binds V.
+ Narrowing guesses a value for V.
+*** "rigid" ops residuate; "flexible" ops use narrowing
+*** operations
+ =:= uses narrowing (and returns Success rather than Bool)
+ == uses residuation
+** non-determinism in I/O actions must not occur
+ "One way to ensure the absence of such errors is the encapsulation of all search between I/O operations, e.g., by using set functions."
+** "no more values" or "no value found" error <=> no rules defined for this
+* some operators
+** (=:=) is for constrained equality (the "logic search variety")
+*** example
+ test> (x && (y || (not x))) =:= True where x,y free
+ {x=True, y=True} True
+*** TODO that doesn't work for Ints
+** ordinary (==) can fail
+ u == v returns “True” when u and v evaluate to the same value and “False” when they evaluate to different values—a more precise definition will be given later. If the evaluation of u and/or v ends in an expression that still contains functions, e.g., 1 ‘div‘ 0 the computation fails and no value is returned
+** concurrent conjunction, disjunction (seems) simple
+ & = concurrent &&
+ `u & v` evaluates u and v concurrently. If both succeed, the evaluation succeeds; otherwise it fails.
+* syntax, true in Haskell too
+** ! conditions can apply to non-arguments. (In Haskell too.)
+ team | x /= y = (x,y)
+   where x = assign Cut 
+         y = assign Polish
+** "where clauses" can pertain across function guards (Haskell too)
+ a ** b | b >= 0 = accum 1 a b
+   where accum x y z | z == 0 = x
+                     | otherwise = accum aux (y * y) (z ‘div‘ 2)
+           where aux = if (z ‘mod‘ 2 == 1) then x * y else x
+** the tail of a list can be defined using a comprehension involving the whole
+ This isn't a convenient definition of Fibonacci, but it's cool that it evaluates.
+ fibo = map fst fibopairs
+ fibopairs = (0,1):(1,2):[(y,x+y)|(x,y)<-fibopairs]
+* well-internalized
+** free values evaluate to many things
+*** example
+ Prelude> x && (y || (not x)) where x,y free
+ {x=True, y=True} True
+ {x=True, y=False} False
+ {x=False, y=y} False
+*** use ":set +free" to avoid needing to declare free variables
+ seems not to work in my `pakcs` installation
+** free ~ there exists
+ x where y free ~ there exists y s.t. x
+** " A non-deterministic program is appropriate only if all its possible outputs are equally desirable. "
+* meh
+** use ":set +interactive" for a more intuitive evaluation strategy
+* skipped: Sec 4.3.2, Trie Trees

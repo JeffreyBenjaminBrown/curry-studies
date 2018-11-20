@@ -1,0 +1,32 @@
+* ask about the language
+** is there a constrained inequality operator? constrained <, >?
+** asking : why do default rules need to be specified?
+*** asked on StackOverflow
+* important and not yet absorbed
+** constrained expression
+ The constrained expression applied to a constraint c and an expression e, i.e., c &> e, evaluates first c and, if c evaluates to “True”, then the result is the value of e, otherwise it fails.
+
+** constraint conditions are unlike other conditions
+ "Each rule defining a function can include one or more conditions ...
+
+ max x y | x < y     = y
+         | otherwise = x
+
+ A rule can also have a constraint (i.e., an expression of type Success) as a condition. In this case, the constraint is checked for satisfiability in order to apply the rule. Thus, the function call reduces to the right-hand side only if the constraint is satisfied, otherwise it fails. Note that multiple conditions as above are not allowed for constraint conditions."
+
+** all defined ops are flexible
+That includes things defined in the prelude, like ++, not just user-defined ones.
+But "primitive" operations, like +, are mostly rigid.
+
+** ensureNotFree : to define a flexible op
+"rigid user-defined functions can be useful. For this purpose, there is a primitive operation ensureNotFree that evaluates its argument and suspends if it is a logic variable."
+
+* graphs in Curry, via Sandra Dylus
+a graph implementation in Curry by Nikita Danilenko.
+
+http://www.rpe.informatik.uni-kiel.de/de/rechnergestutzte-programmentwicklung/dateien/nda/ndga.pdf
+
+https://github.com/nikitaDanilenko/ndga
+* development version of PAKCS has typeclasses
+https://www.informatik.uni-kiel.de/~pakcs/download.html
+

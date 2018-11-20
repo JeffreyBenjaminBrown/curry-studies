@@ -1,0 +1,3 @@
+* some Curry functions I might need
+** Hex-formatting a number
+showInt 'x' Nothing (Just 1) (Just 1) 31

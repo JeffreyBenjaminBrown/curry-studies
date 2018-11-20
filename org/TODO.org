@@ -27,6 +27,3 @@ a graph implementation in Curry by Nikita Danilenko.
 http://www.rpe.informatik.uni-kiel.de/de/rechnergestutzte-programmentwicklung/dateien/nda/ndga.pdf
 
 https://github.com/nikitaDanilenko/ndga
-* development version of PAKCS has typeclasses
-https://www.informatik.uni-kiel.de/~pakcs/download.html
-

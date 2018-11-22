@@ -1,6 +1,6 @@
 -- Someone on StackOverflow recommended this:
 --{-# OPTIONS_CYMAKE -F --pgmF=currypp --optF=defaultrules #-}
-{-# OPTIONS_CYMAKE --pgmF=currypp --optF=defaultrules #-}
+{-# OPTIONS_CYMAKE -F --pgmF=currypp --optF=defaultrules #-}
 
 import SetRBT
 import Char

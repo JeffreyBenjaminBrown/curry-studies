@@ -1,10 +1,21 @@
+* TODO These are chronological
 * getting pakcs
 I followed the advice under "Ubuntu" (*not* Debian) here:
 https://packages.ps.informatik.uni-kiel.de/curry/index.html
 
 Specifically, I ran the wget command there to add the key, and then I added the line for the stable (*not* nightly) builds to the end of my /etc/apt/sources.list file. For <codename> in that line I substituted bionic, because Ubuntu 18.04 = Bionic Beaver. Last I ran apt update and apt install pakcs.
-* getting more stuff
-** getting currycheck
+* getting currycheck
 In the mailing list thread "Specifying default rules: Why and how?", the first answer from Michael Hanus was to run this:
 
 cypm update && cypm install currycheck
+* getting currypp
+Same trick:
+cypm update && cypm install currypp
+* apt remove pakcs
+* install from pakcs-2.0.2-amd64-Linux.tar.gz
+uncompress, make, then add bin/ to PATHx
+** following advice here:
+   https://stackoverflow.com/questions/53357361/specifying-default-rules-in-the-curry-language-why-and-how/53367863#comment93722810_53367863
+   https://www.informatik.uni-kiel.de/~pakcs/download.html
+   https://www.informatik.uni-kiel.de/~pakcs/INSTALL.html
+ 

@@ -1,0 +1,33 @@
+t
+jeff@jeff-inspiron-2017:~/logic/curry$ pakcs
+  ______      __       _    _    ______   _______     
+ |  __  |    /  \     | |  / /  |  ____| |  _____|   Portland Aachen Kiel
+ | |  | |   / /\ \    | |_/ /   | |      | |_____    Curry System
+ | |__| |  / /__\ \   |  _  |   | |      |_____  |   
+ |  ____| / ______ \  | | \ \   | |____   _____| |   Version 2.0.2
+ |_|     /_/      \_\ |_|  \_\  |______| |_______|   
+ ***WITH TYPECLASSES***
+
+Curry2Prolog(swi 7.6) Compiler Environment (Version of 2018-11-16)
+(RWTH Aachen, CAU Kiel, Portland State University)
+
+Type ":h" for help (contact: pakcs@curry-language.org)
+Prelude> :l test
+[ 1 of 11] Skipping  Prelude          ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/Prelude.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/Prelude.fcy )
+[ 2 of 11] Skipping  Char             ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/Char.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/Char.fcy )
+[ 3 of 11] Skipping  Findall          ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/Findall.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/Findall.fcy )
+[ 4 of 11] Skipping  Maybe            ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/Maybe.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/Maybe.fcy )
+[ 5 of 11] Skipping  List             ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/List.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/List.fcy )
+[ 6 of 11] Skipping  RedBlackTree     ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/RedBlackTree.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/RedBlackTree.fcy )
+[ 7 of 11] Skipping  Test.Prop        ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/Test/Prop.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/Test/Prop.fcy )
+[ 8 of 11] Skipping  Sort             ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/Sort.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/Sort.fcy )
+[ 9 of 11] Skipping  SetFunctions     ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/SetFunctions.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/SetFunctions.fcy )
+[10 of 11] Skipping  SetRBT           ( /home/jeff/logic/curry/install/pakcs-2.0.2/lib/SetRBT.curry, /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/SetRBT.fcy )
+[11 of 11] Compiling test             ( test.curry, .curry/test.fcy )
+sh: 1: /build/pakcs-rtzJu6/pakcs-2.0.1/bin/pakcs-frontend: not found
+ERROR: i/o error: ERROR: user error: Illegal source program
+
+Error:
+    Preprocessor exited with exit code 1
+ERROR occurred during parsing!
+Prelude> 

@@ -1,0 +1,31 @@
+* use `solve` to find only solutions that evaluate to True
+** `solve` is a partial function
+solve True = True
+** example of use
+data Person = John | Christine | Alice | Andrew deriving Eq
+mother John = Christine
+solve (mother John == Christine)
+* "free" declarations can be in "let" clasuses, too
+isGrandmother g | let c free in mother (mother c) == g 
+                = True
+* `_` = `let x free in x`
+* (=:=) is like (==) without any of the False rules
+* fcase ("flexible case") is like a nondeterministic case
+In the following, c is equal to False, while fc is equal to False ? True.
+c = case () of
+  _ -> False
+  _ -> True
+fc = fcase () of
+  _ -> False
+  _ -> True
+* Appendix A.6: Concurrent Object-Oriented Programming
+** I don't get it.
+** use ensureSpine to treat a stream like a list
+*** ref: the Curry Report, appendix A.6 
+*** the money quote
+ makeAccount s = account 0 (ensureSpine s)
+
+ A new account object is created by the constraint “makeAccount s” where s is a free variable.
+ The function ensureSpine (see Section 5.6) used in the definition of makeAccount ensures that the
+ evaluation of the function call to account suspends on uninstantiated parts of the message list
+* &> can force sequential evaluation (from the left) of constraints

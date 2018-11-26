@@ -1,3 +1,5 @@
+module Rslt where
+
 import SetRBT
 
 
@@ -8,20 +10,19 @@ data Expr = Word String
   | Rel [Address] (Address)
      -- ^ The last Address (the one not in the List) should be to a Template.
     -- ^ Rels are like Lists in that the weird Expr's Address comes last.
-  | ExprParagraph Paragraph -- ^ The only constructor not in the index.
+  | ExprParagraph Paragraph -- ^ The only kind of Expr not in the index.
     -- The Strings in a Paragraph are like a single-use Template.
-    -- A Paragraph has only members, whereas a Rel has members and a Template.
+    -- A Paragraph has Members, but (unlike a Rel) no Template.
   | Template [Address] -- ^ These Addresses are probably to Words.
 
 -- | Paragraph = A List of (String,Address) pairs, capped by a String.
 -- Paragraphs are like Templates, in that |Members| + 1 = |Strings|.
 -- Paragraphs are like Lists, in that the weird constructor comes last.
-data Paragraph = Paragraph [(String,Index)] String
+data Paragraph = Paragraph [(String, Address)] String
 
 data Role = RoleTemplate | RoleMember Int
 
--- | This is like a position at an employer: it includes host and role.
--- "of Rel|Paragraph|Role" not enforced.
+-- | Like a position at an employer: includes host and role.
 type Position = (
   Address -- ^ the Address should be of a Rel|Paragraph|Template
   , Role )
@@ -32,8 +33,7 @@ data ExprImg = ImgAddress Address
   | ImgRel (ExprImg) [ExprImg] -- ^ the first ExprImg should be of a Template
   | ImgTemplate [ExprImg]
 
--- | Curry does not offer typeclasses!
-class HasArity a where -- Expr and ExprImg have it. Words have Arity 0.
+class HasArity a where
   arity :: a -> Arity
 
 instance HasArity Expr where
@@ -42,11 +42,14 @@ instance HasArity Expr where
   arity (ExprParagraph (Paragraph x _)) = length x
   arity (Template x)                    = length x
 
+instance HasArity (ExprImg, Index) where
+  
+
 -- instance HasArity ExprImg where -- TODO
 -- getExpr :: Address -> IO Expr -- TODO
 
 data Index = Index {
   indexOf :: ExprImg -> Address
   , containersOf :: Address -> SetRBT Position
-  , contentsOf :: Position -> Address
+  , inRole :: Position -> Address
   }

@@ -1,5 +1,4 @@
 -- Someone on StackOverflow recommended this:
---{-# OPTIONS_CYMAKE -F --pgmF=currypp --optF=defaultrules #-}
 {-# OPTIONS_CYMAKE -F --pgmF=currypp --optF=defaultrules #-}
 
 import SetRBT
@@ -56,14 +55,28 @@ endsDoubled (    _
             ) | b == 2*a
   = x
 
+
 -- | default rules
--- My tests find no difference in behavior between the third and fourth lines.
+-- The default rule is executed only if none of the other conditions apply.
+-- This permits a successful search to avoid returning the faied-search case,
+-- and permits one to resume control after a failed search.
+--
+-- myLookup 1 [(1,2)]
+-- myLookup 2 [(1,2)]
+-- myLookup2 1 [(1,2)]
+-- myLookup2 2 [(1,2)]
+
+-- | This has no default rule
 myLookup :: k -> [(k,v)] -> Maybe v
 myLookup key (_++[(key,value)]++_ ) = Just value
---myLookup'default _ _ = Nothing
 myLookup _ _ = Nothing
 
+-- | This has a default rule
+myLookup2 :: k -> [(k,v)] -> Maybe v
+myLookup2 key (_++[(key,value)]++_ ) = Just value
+myLookup2'default _ _ = Nothing
 
+-- | = not sure why I wrote this
 myGte :: (Num a, Ord a) => a -> a -> Bool
 myGte a b | a >= b = True
 myGte _ _ = False

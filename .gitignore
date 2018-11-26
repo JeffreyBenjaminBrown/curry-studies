@@ -2,5 +2,5 @@ _done/
 refs/
 install/
 DO_NOT_DELETE/
-git-comment
+git-comment.txt
 .curry

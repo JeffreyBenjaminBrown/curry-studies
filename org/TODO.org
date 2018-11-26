@@ -1,4 +1,6 @@
 * important and not yet absorbed
+** constrained expression
+The constrained expression applied to a constraint c and an expression e, i.e., c &> e, evaluates first c and, if c evaluates to “True”, then the result is the value of e, otherwise it fails.
 ** constraint conditions are unlike other conditions
 "Each rule defining a function can include one or more conditions ...
 

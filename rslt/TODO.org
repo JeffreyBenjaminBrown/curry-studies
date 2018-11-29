@@ -1,0 +1,6 @@
+* test SomeData.curry:invertPositions'
+* force full evaluation of index immediately
+* use ordinary hard-disk files rather than Rslt.Files
+* delete Rslt.Index.holdsPosition
+* Tests.curry:-- call `broken` fron the REPL?
+https://stackoverflow.com/questions/53547365/the-pakcs-repl-consider-something-undefined-but-the-module-defining-it-is-loade

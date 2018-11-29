@@ -55,9 +55,10 @@ instance (Show a, Show b) => Show (FM a b) where
 -- It can also find anything findable -- i.e. anything but a Paragraph.
 data Index = Index {
   indexOf :: ImgOfExpr -> Address
-  , positionsHeldBy :: Address -> SetRBT (Role, Address)
+  , positionsHeldBy :: Address -> [(Role, Address)]
     -- ^ requires random access, because the set could be big
   , positionsIn :: Address -> [(Role, Address)]
     -- ^ whereas this set is probably small
   , holdsPosition :: (Role, Address) -> Address
+    -- TODO delete this field; instead, make it a function of positionsIn
   }

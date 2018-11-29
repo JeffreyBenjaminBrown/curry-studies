@@ -56,10 +56,16 @@ invertPositions aras = foldl addInvertedPosition (emptyFM (<)) aras
 -- | TODO #strict: force full evaluation of index immediately
 index :: Index
 index = Index { indexOf = error "1"
-              , positionsHeldBy = error "2"
+              , positionsHeldBy = positionsHeldBy'
               , positionsIn = positionsIn'
-              , holdsPosition = error "4" } where
+              , holdsPosition = error "4" }
+  where
+  fps = filesPositions files
   positionsIn' :: Address -> [(Role, Address)]
-  positionsIn' a = let m = listToFM (<) $ filesPositions files
-    in case lookupFM m a of Nothing -> []
-                            Just ps -> ps
+  positionsIn' a = case lookupFM (listToFM (<) fps) a
+                   of Nothing -> []
+                      Just ps -> ps
+  positionsHeldBy' :: Address -> [(Role, Address)]
+  positionsHeldBy' a = case lookupFM (invertPositions fps) a
+                       of Nothing -> []
+                          Just ps -> ps

@@ -47,6 +47,9 @@ instance HasArity Expr where
 -- Everything in the Index can be derived from the Files.
 type Files = FM Int Expr -- TODO use ordinary hard-disk files
 
+instance (Show a, Show b) => Show (FM a b) where
+  show = show . fmToList
+
 -- | The Index can answer every fundamental connectivity question:
 -- What is in something, what is something in, etc.
 -- It can also find anything findable -- i.e. anything but a Paragraph.

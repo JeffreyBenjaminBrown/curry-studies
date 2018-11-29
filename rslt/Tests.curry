@@ -1,6 +1,9 @@
 module Tests where
 
-import FiniteMap
+
+import FiniteMap as M
+import SetRBT as M
+import RedBlackTree as M
 
 import Rslt
 import SomeData
@@ -29,3 +32,7 @@ testInvertPositions =
                 ,(22,[(RoleMember 2,11)
                      ,(RoleMember 2,1)])]
 
+-- TODO I can call `broken` fron the REPL,
+-- but I can't evaluate the RHS of its definition there.
+broken :: SetRBT Int
+broken = insertRBT 1 $ emptySetRBT (<)

@@ -28,3 +28,4 @@ testInvertPositions =
                 ,(11,[(RoleMember 1,1)])
                 ,(22,[(RoleMember 2,11)
                      ,(RoleMember 2,1)])]
+

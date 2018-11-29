@@ -21,11 +21,6 @@ data Expr = Word String
 
 data Role = RoleTemplate | RoleMember Int deriving (Show, Eq, Ord)
 
--- | Like a position at an employer: includes host and role.
-type Position = (
-  Address -- ^ the Address should be of a Rel|Paragraph|Template
-  , Role )
-
 -- | Something used to locate an Expr in an Index,
 -- given varying degrees of identifying information.
 data ImgOfExpr = ImgOfExpr Expr
@@ -57,7 +52,9 @@ type Files = FM Int Expr -- TODO use ordinary hard-disk files
 -- It can also find anything findable -- i.e. anything but a Paragraph.
 data Index = Index {
   indexOf :: ImgOfExpr -> Address
-  , positionsOf :: Address -> SetRBT Position
-  , rolesIn :: Address -> [(Role, Address)]
-  , inRole :: Position -> Address
+  , positionsHeldBy :: Address -> SetRBT (Role, Address)
+    -- ^ requires random access, because the set could be big
+  , positionsIn :: Address -> [(Role, Address)]
+    -- ^ whereas this set is probably small
+  , holdsPosition :: (Role, Address) -> Address
   }

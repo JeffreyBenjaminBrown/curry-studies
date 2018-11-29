@@ -35,6 +35,10 @@ filesPositions = filter (not . null . snd) . map f . fmToList
 -- | TODO #strict: force full evaluation of index immediately
 index :: Index
 index = Index { indexOf = error "1"
-              , positionsOf = error "2"
-              , rolesIn = filesPositions files
-              , inRole = error "4" }
+              , positionsHeldBy = error "2"
+              , positionsIn = positionsIn'
+              , holdsPosition = error "4" } where
+  positionsIn' :: Address -> [(Role, Address)]
+  positionsIn' a = let m = listToFM (<) $ filesPositions files
+    in case lookupFM m a of Nothing -> []
+                            Just ps -> ps

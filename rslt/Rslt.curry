@@ -28,11 +28,12 @@ type Position = (
 
 -- | Something used to locate an Expr in an Index,
 -- given varying degrees of identifying information.
-data ImgExpr = ImgExpr Expr
-  | ImgAddress Address
-  | ImgWord String
-  | ImgRel [ExprImg] ExprImg -- ^ the last ExprImg should be of a Template
-  | ImgTemplate [ExprImg]
+data ImgOfExpr = ImgOfExpr Expr
+  | ImgOfAddress Address
+  | ImgOfWord String
+  | ImgOfRel [ImgOfExpr] ImgOfExpr
+    -- ^ the last ImgOfExpr in an ImgOfRel should be an image of a Template
+  | ImgOfTemplate [ImgOfExpr]
 
 class HasArity a where
   arity :: a -> Arity
@@ -44,15 +45,18 @@ instance HasArity Expr where
   arity (Paragraph x _) = length x
 
 
--- | Files are used to retrieve the text of Words and Paragraphs.
+-- | = "A graph" = one `Files` + one `Index`.
+-- The index is derived from the files.
+
+-- | The Files are used to retrieve the text of Words and Paragraphs.
 -- Everything in the Index can be derived from the Files.
-type Files = FM Int Expr
+type Files = FM Int Expr -- TODO use ordinary hard-disk files
 
 -- | The Index can answer every fundamental connectivity question:
 -- What is in something, what is something in, etc.
 -- It can also find anything findable -- i.e. anything but a Paragraph.
 data Index = Index {
-  indexOf :: ExprImg -> Address
+  indexOf :: ImgOfExpr -> Address
   , positionsOf :: Address -> SetRBT Position
   , rolesIn :: Address
             -> ( [Address] -- ^ Members

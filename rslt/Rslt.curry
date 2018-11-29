@@ -19,7 +19,7 @@ data Expr = Word String
     -- Paragraphs are like Lists, in that the weird bit comes last.
     -- Paragrpah is the only kind of Expr not in the index.
 
-data Role = RoleTemplate | RoleMember Int
+data Role = RoleTemplate | RoleMember Int deriving (Show, Eq, Ord)
 
 -- | Like a position at an employer: includes host and role.
 type Position = (

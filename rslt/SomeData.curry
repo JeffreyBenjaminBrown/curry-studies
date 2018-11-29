@@ -27,9 +27,8 @@ exprPositions expr =
     Rel mas ta      -> (RoleTemplate,ta) : map f (zip [1..]           mas)
     Paragraph sas _ ->                     map f (zip [1..] $ map snd sas)
 
--- TODO : Use catMaybes to skip anything with an empty list of positions
 filesPositions :: Files -> [(Address, [(Role, Address)])]
-filesPositions = map f . fmToList
+filesPositions = filter (not . null . snd) . map f . fmToList
   where f :: (Address, Expr) -> (Address, [(Role,Address)])
         f (a, expr) = (a, exprPositions expr)
 

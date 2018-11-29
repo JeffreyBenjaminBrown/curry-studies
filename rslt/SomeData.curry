@@ -32,12 +32,9 @@ filesPositions = filter (not . null . snd) . map f . fmToList
   where f :: (Address, Expr) -> (Address, [(Role,Address)])
         f (a, expr) = (a, exprPositions expr)
 
+-- | TODO #strict: force full evaluation of index immediately
 index :: Index
-index = Index { indexOf = indexOf'
-              , positionsOf = positionsOf'
-              , rolesIn = rolesIn'
-              , inRole = inRole' } where
-  indexOf' = error "1"
-  positionsOf' = error "2"
-  rolesIn' = error "3"
-  inRole' = error "4"
+index = Index { indexOf = error "1"
+              , positionsOf = error "2"
+              , rolesIn = filesPositions files
+              , inRole = error "4" }

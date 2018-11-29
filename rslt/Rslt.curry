@@ -58,8 +58,6 @@ type Files = FM Int Expr -- TODO use ordinary hard-disk files
 data Index = Index {
   indexOf :: ImgOfExpr -> Address
   , positionsOf :: Address -> SetRBT Position
-  , rolesIn :: Address
-            -> ( [Address] -- ^ Members
-               , Maybe Address) -- ^ Template
+  , rolesIn :: Address -> [(Role, Address)]
   , inRole :: Position -> Address
   }

@@ -4,7 +4,6 @@
 module All ( module M
            ) where
 
-import List as M
 import FiniteMap as M
 import SetRBT as M
 import RedBlackTree as M

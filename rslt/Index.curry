@@ -6,6 +6,12 @@ import SetRBT
 import Rslt
 
 
+exprVariety :: Expr -> (Expr', Arity)
+exprVariety (Word _)          = (Word'      , 0)
+exprVariety (Template mas)    = (Template'  , length mas)
+exprVariety (Rel mas _)       = (Rel'       , length mas)
+exprVariety (Paragraph sas _) = (Paragraph' , length sas)
+
 exprPositions :: Expr -> [(Role,Address)]
 exprPositions expr =
   let f :: (Int, Address) -> (Role, Address)
@@ -42,15 +48,20 @@ invertPositions aras = foldl addInvertedPosition (emptyFM (<)) aras
 
 -- | TODO #strict: force full evaluation of index immediately
 index :: Files -> Index
-index fs = Index { indexOf = error "1"
+index files = Index { indexOf = error "1"
+                 , variety = variety'
                  , positionsHeldBy = positionsHeldBy'
                  , positionsIn = positionsIn'
                  } where
-  fps = filesPositions fs :: [(Address, [(Role, Address)])]
+  fps = filesPositions files :: [(Address, [(Role, Address)])]
+  variety' :: Address -> (Expr', Arity)
+  variety' = maybe (error "Requested variety of Address not in Index.")
+             id . lookupFM varieties
+    where varieties = mapFM (\_ v -> exprVariety v) files
   positionsIn' :: Address -> Maybe (FM Role Address)
-  positionsIn' a = lookupFM positions a where
+  positionsIn' = lookupFM positions where
     positions :: FM Address (FM Role Address)
     positions = mapFM (\_ v -> listToFM (<) v) $ listToFM (<) fps
   positionsHeldBy' :: Address -> SetRBT (Role, Address)
-  positionsHeldBy' a = maybe (emptySetRBT (<)) id
-                       $ lookupFM (invertPositions fps) a
+  positionsHeldBy' = maybe (emptySetRBT (<)) id 
+                     . lookupFM (invertPositions fps)

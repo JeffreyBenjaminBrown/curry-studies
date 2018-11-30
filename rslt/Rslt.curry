@@ -20,6 +20,9 @@ data Expr = Word String
     -- Paragrpah is the only kind of Expr not in the index.
   deriving (Show, Eq, Ord)
 
+data Expr' = Word' | Rel' | Template' | Paragraph'
+  deriving (Show, Eq, Ord)
+
 data Role = RoleTemplate | RoleMember Int deriving (Show, Eq, Ord)
 
 -- | Something used to locate an Expr in an Index,
@@ -56,6 +59,7 @@ instance (Show a, Show b) => Show (FM a b) where
 -- It can also find anything findable -- i.e. anything but a Paragraph.
 data Index = Index {
   indexOf :: ImgOfExpr -> Address
+  , variety :: Address -> (Expr', Arity)
   , positionsIn :: Address -> Maybe (FM Role Address)
     -- ^ whereas this set is probably small
   , positionsHeldBy :: Address -> SetRBT (Role, Address)

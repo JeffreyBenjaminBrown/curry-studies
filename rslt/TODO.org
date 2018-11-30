@@ -3,6 +3,19 @@ https://mail.google.com/mail/u/0/#sent/KtbxLvHkVTXWJFRfxzwlKdBtLNPMLtGMcL
 * minor
 ** (awaiting response) Tests.curry:-- call `broken` fron the REPL?
  https://stackoverflow.com/questions/53547365/the-pakcs-repl-consider-something-undefined-but-the-module-defining-it-is-loade
+** ? conflicting definitions in List
+*** if I add this line to All.curry:
+import List as M
+*** then I get these errors
+/home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/List.icurry, line 6.1: Error:
+    Multiple exports of name `delete' at:
+      line 6.1
+      line 4.1
+
+/home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/List.icurry, line 49.1: Error:
+    Multiple exports of name `sortBy' at:
+      line 49.1
+      line 17.1
 * major
 ** force full evaluation of index immediately
 ** use ordinary hard-disk files rather than Rslt.Files

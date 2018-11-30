@@ -1,7 +1,9 @@
 * (awaiting response) add Util.sort to the List module
 https://mail.google.com/mail/u/0/#sent/KtbxLvHkVTXWJFRfxzwlKdBtLNPMLtGMcL
-* force full evaluation of index immediately
-* use ordinary hard-disk files rather than Rslt.Files
-* delete Rslt.Index.holdsPosition
-* Tests.curry:-- call `broken` fron the REPL?
-https://stackoverflow.com/questions/53547365/the-pakcs-repl-consider-something-undefined-but-the-module-defining-it-is-loade
+* minor
+** (awaiting response) Tests.curry:-- call `broken` fron the REPL?
+ https://stackoverflow.com/questions/53547365/the-pakcs-repl-consider-something-undefined-but-the-module-defining-it-is-loade
+* major
+** force full evaluation of index immediately
+** use ordinary hard-disk files rather than Rslt.Files
+

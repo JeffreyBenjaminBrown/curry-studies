@@ -6,7 +6,8 @@ import SetRBT
 import RedBlackTree
 
 import Rslt
-import SomeData
+import Index
+import TestData
 import Util
 
 
@@ -17,13 +18,14 @@ tests = [ testAddInvertedPosition
         ]
 
 testHoldsPosition :: Bool
-testHoldsPosition = and [ holdsPosition index (RoleMember 1, 4) == Just 0
-                        , holdsPosition index (RoleMember 2, 4) == Just 3
-                        , holdsPosition index (RoleMember 2, 5) == Just 2
-                        , holdsPosition index (RoleMember 1, 5) == Just 1
-                        , holdsPosition index (RoleTemplate, 5) == Just 3
-                        , holdsPosition index (RoleTemplate, 6) == Nothing
-                        ]
+testHoldsPosition = and
+  [ holdsPosition testIndex (RoleMember 1, 4) == Just 0
+  , holdsPosition testIndex (RoleMember 2, 4) == Just 3
+  , holdsPosition testIndex (RoleMember 2, 5) == Just 2
+  , holdsPosition testIndex (RoleMember 1, 5) == Just 1
+  , holdsPosition testIndex (RoleTemplate, 5) == Just 3
+  , holdsPosition testIndex (RoleTemplate, 6) == Nothing
+  ]
 
 testAddInvertedPosition :: Bool
 testAddInvertedPosition =

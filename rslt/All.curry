@@ -4,11 +4,13 @@
 module All ( module M
            ) where
 
+import List as M
 import FiniteMap as M
 import SetRBT as M
 import RedBlackTree as M
 
 import Rslt as M
-import SomeData as M
+import Index as M
+import TestData as M
 import Tests as M
 import Util as M

@@ -1,7 +1,6 @@
 module Util where
 
 import List
-import RedBlackTree
 import SetRBT
 
 

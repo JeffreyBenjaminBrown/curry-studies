@@ -58,7 +58,7 @@ instance (Show a, Show b) => Show (FM a b) where
 -- What is in something, what is something in, etc.
 -- It can also find anything findable -- i.e. anything but a Paragraph.
 data Index = Index {
-  indexOf :: ImgOfExpr -> Address
+  indexOf :: ImgOfExpr -> Maybe Address
   , variety :: Address -> (Expr', Arity)
   , positionsIn :: Address -> Maybe (FM Role Address)
     -- ^ whereas this set is probably small

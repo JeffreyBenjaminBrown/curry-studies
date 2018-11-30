@@ -1,8 +1,6 @@
 * (awaiting response) add Util.sort to the List module
 https://mail.google.com/mail/u/0/#sent/KtbxLvHkVTXWJFRfxzwlKdBtLNPMLtGMcL
 * minor
-** TODO easy : in Index.curry : enable something simpler
--- exprImgKey'default x = Just x -- TODO : use this instead of the rest
 ** (awaiting response) Tests.curry:-- call `broken` fron the REPL?
  https://stackoverflow.com/questions/53547365/the-pakcs-repl-consider-something-undefined-but-the-module-defining-it-is-loade
 ** ? conflicting definitions in List
@@ -18,6 +16,7 @@ import List as M
     Multiple exports of name `sortBy' at:
       line 49.1
       line 17.1
+** Index.exprImgKey'default x = Just x -- TODO : Why the warning?
 * major
 ** force full evaluation of index immediately
 ** use ordinary hard-disk files rather than Rslt.Files

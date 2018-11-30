@@ -1,7 +1,8 @@
--- {-# OPTIONS_CYMAKE -F --pgmF=currypp --optF=defaultrules #-}
+{-# OPTIONS_CYMAKE -F --pgmF=currypp --optF=defaultrules #-}
 
 module Index where
 
+import Maybe
 import FiniteMap
 import SetRBT
 
@@ -52,10 +53,19 @@ invertPositions aras = foldl addInvertedPosition (emptyFM (<)) aras
 
 exprImgKey :: Expr -> Maybe Expr
 exprImgKey (Paragraph _ _) = Nothing
--- exprImgKey'default x = Just x -- TODO : use this instead of the rest
-exprImgKey (Word x)              = Just $ Word x
-exprImgKey (Rel as a)            = Just $ Rel as a
-exprImgKey (Template as)         = Just $ Template as
+exprImgKey'default x = Just x -- TODO : Why the warning?
+
+imgDb :: Files -> FM Expr Address
+imgDb = listToFM (<) . catMaybes . map f . fmToList where
+  f (addr, expr) = case exprImgKey expr of 
+    Nothing -> Nothing
+    _       -> Just (expr, addr)
+
+imgLookup :: Files -> (ImgOfExpr -> Maybe Address)
+imgLookup files img = let idb = imgDb files in case img of
+  ImgOfExpr    w@(Word _) -> lookupFM idb w
+  ImgOfAddress a          -> maybe Nothing (const $ Just a) $ lookupFM files a
+  _                       -> Nothing
 
 -- | TODO (#strict) Force full, immediate evaluation of `Index`.
 index :: Files -> Index
@@ -66,10 +76,6 @@ index files = Index { indexOf = error "1"
                     } where
 
   fps = filesPositions files :: [(Address, [(Role, Address)])]
-
---  >>>
---  indexOf' :: ImgOfExpr -> Address
---  indexOf' (ImgOfExpr expr) = 
 
   variety' :: Address -> (Expr', Arity)
   variety' = maybe (error "Requested variety of Address not in Index.")

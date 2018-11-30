@@ -1,7 +1,3 @@
-* TODO next : "looks like a job for fcase!"
-imgLookup :: Files -> (ImgOfExpr -> Maybe Address)
-...
-ImgOfTemplate [is] -> lookupFM idb $ Template $ map (imgLookup files) is
 * (awaiting response) add Util.sort to the List module
 https://mail.google.com/mail/u/0/#sent/KtbxLvHkVTXWJFRfxzwlKdBtLNPMLtGMcL
 * minor

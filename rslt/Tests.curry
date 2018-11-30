@@ -18,6 +18,12 @@ tests = [ testAddInvertedPosition
         , testVariety
         ]
 
+-- imgLookup testFiles $ ImgOfAddress $ 0
+-- imgLookup testFiles $ ImgOfExpr $ Word "needs"
+-- imgLookup testFiles $ ImgOfExpr $ Word "oxygen"
+-- imgLookup testFiles $ ImgOfExpr $ Template [0,3,0]
+-- imgLookup testFiles $ ImgOfTemplate [ImgOfAddress 0, ImgOfExpr $ Word "needs", ImgOfExpr $ Word ""]
+
 testHoldsPosition :: Bool
 testHoldsPosition = and
   [ holdsPosition testIndex (RoleMember 1, 4) == Just 0

@@ -7,6 +7,7 @@ import FiniteMap
 import SetRBT
 
 import Rslt
+import Util
 
 
 -- | = Build an `Index`
@@ -61,12 +62,14 @@ imgDb = listToFM (<) . catMaybes . map f . fmToList where
     Nothing -> Nothing
     _       -> Just (expr, addr)
 
--- TODO looks like a job for fcase!
 imgLookup :: Files -> (ImgOfExpr -> Maybe Address)
 imgLookup files img = let idb = imgDb files in case img of
   ImgOfExpr    e -> lookupFM idb e
   ImgOfAddress a -> maybe Nothing (const $ Just a) $ lookupFM files a
---  ImgOfTemplate [is] -> lookupFM idb $ Template $ map (imgLookup files) is
+  ImgOfTemplate is -> let mas = map (imgLookup files) is
+                      in case hasANothing mas of
+                           True -> Nothing
+                           False -> lookupFM idb $ Template $ catMaybes mas
   _              -> Nothing
 
 -- | TODO (#strict) Force full, immediate evaluation of `Index`.

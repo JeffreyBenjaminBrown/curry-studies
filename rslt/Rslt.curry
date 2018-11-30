@@ -56,11 +56,13 @@ instance (Show a, Show b) => Show (FM a b) where
 -- It can also find anything findable -- i.e. anything but a Paragraph.
 data Index = Index {
   indexOf :: ImgOfExpr -> Address
-  , positionsIn :: Address -> [(Role, Address)]
+  , positionsIn :: Address -> Maybe (FM Role Address)
     -- ^ whereas this set is probably small
   , positionsHeldBy :: Address -> SetRBT (Role, Address)
     -- ^ requires random access, because the set could be big
   }
 
---holdsPosition :: Index -> (Role, Address) -> Address
---holdsPosition i (r,a) = lookup . lookup
+holdsPosition :: Index -> (Role, Address) -> Maybe Address
+holdsPosition i (r,a) = case positionsIn i a of
+  Nothing -> Nothing
+  Just ps -> lookupFM ps r

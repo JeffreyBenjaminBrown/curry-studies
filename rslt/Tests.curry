@@ -13,7 +13,17 @@ import Util
 tests :: [Bool]
 tests = [ testAddInvertedPosition
         , testInvertPositions
+        , testHoldsPosition
         ]
+
+testHoldsPosition :: Bool
+testHoldsPosition = and [ holdsPosition index (RoleMember 1, 4) == Just 0
+                        , holdsPosition index (RoleMember 2, 4) == Just 3
+                        , holdsPosition index (RoleMember 2, 5) == Just 2
+                        , holdsPosition index (RoleMember 1, 5) == Just 1
+                        , holdsPosition index (RoleTemplate, 5) == Just 3
+                        , holdsPosition index (RoleTemplate, 6) == Nothing
+                        ]
 
 testAddInvertedPosition :: Bool
 testAddInvertedPosition =

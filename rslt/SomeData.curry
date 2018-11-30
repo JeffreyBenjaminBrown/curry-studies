@@ -57,11 +57,12 @@ index = Index { indexOf = error "1"
               , positionsHeldBy = positionsHeldBy'
               , positionsIn = positionsIn'
               } where
-  fps = filesPositions files
-  positionsIn' :: Address -> [(Role, Address)]
-  positionsIn' a = case lookupFM (listToFM (<) fps) a
-                   of Nothing -> []
-                      Just ps -> ps
+  fps = filesPositions files :: [(Address, [(Role, Address)])]
+  positionsIn' :: Address -> Maybe (FM Role Address)
+  positionsIn' a = lookupFM positions a where
+    positions :: FM Address (FM Role Address)
+    positions = mapFM (\_ v -> listToFM (<) v) $ listToFM (<) fps
   positionsHeldBy' :: Address -> SetRBT (Role, Address)
   positionsHeldBy' a = maybe (emptySetRBT (<)) id
                        $ lookupFM (invertPositions fps) a
+

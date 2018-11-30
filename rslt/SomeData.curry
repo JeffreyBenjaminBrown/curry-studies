@@ -51,20 +51,18 @@ invertPositions :: [( Address, [(Role, Address)] )]
                 -> FM Address (SetRBT (Role, Address))
 invertPositions aras = foldl addInvertedPosition (emptyFM (<)) aras
 
-
 -- | TODO #strict: force full evaluation of index immediately
 index :: Index
 index = Index { indexOf = error "1"
               , positionsHeldBy = positionsHeldBy'
               , positionsIn = positionsIn'
-              , holdsPosition = error "4" }
-  where
+              } where
   fps = filesPositions files
-  positionsIn' :: Address -> [(Role, Address)]
-  positionsIn' a = case lookupFM (listToFM (<) fps) a
-                   of Nothing -> []
-                      Just ps -> ps
   positionsHeldBy' :: Address -> SetRBT (Role, Address)
   positionsHeldBy' a = case lookupFM (invertPositions fps) a
                        of Nothing -> emptySetRBT (<)
                           Just ps -> ps
+  positionsIn' :: Address -> [(Role, Address)]
+  positionsIn' a = case lookupFM (listToFM (<) fps) a
+                   of Nothing -> []
+                      Just ps -> ps

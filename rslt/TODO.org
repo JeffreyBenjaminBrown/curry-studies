@@ -1,4 +1,5 @@
-* add Util.sort to the List module
+* (awaiting response) add Util.sort to the List module
+https://mail.google.com/mail/u/0/#sent/KtbxLvHkVTXWJFRfxzwlKdBtLNPMLtGMcL
 * force full evaluation of index immediately
 * use ordinary hard-disk files rather than Rslt.Files
 * delete Rslt.Index.holdsPosition

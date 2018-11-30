@@ -29,7 +29,6 @@ data Role = RoleTemplate | RoleMember Int deriving (Show, Eq, Ord)
 -- given varying degrees of identifying information.
 data ImgOfExpr = ImgOfExpr Expr
   | ImgOfAddress Address
-  | ImgOfWord String
   | ImgOfRel [ImgOfExpr] ImgOfExpr
     -- ^ the last ImgOfExpr in an ImgOfRel should be an image of a Template
   | ImgOfTemplate [ImgOfExpr] deriving (Show, Eq, Ord)

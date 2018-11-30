@@ -57,15 +57,17 @@ exprImgKey'default x = Just x -- TODO : Why the warning?
 
 imgDb :: Files -> FM Expr Address
 imgDb = listToFM (<) . catMaybes . map f . fmToList where
-  f (addr, expr) = case exprImgKey expr of 
+  f (addr, expr) = case exprImgKey expr of
     Nothing -> Nothing
     _       -> Just (expr, addr)
 
+-- TODO looks like a job for fcase!
 imgLookup :: Files -> (ImgOfExpr -> Maybe Address)
 imgLookup files img = let idb = imgDb files in case img of
-  ImgOfExpr    w@(Word _) -> lookupFM idb w
-  ImgOfAddress a          -> maybe Nothing (const $ Just a) $ lookupFM files a
-  _                       -> Nothing
+  ImgOfExpr    e -> lookupFM idb e
+  ImgOfAddress a -> maybe Nothing (const $ Just a) $ lookupFM files a
+--  ImgOfTemplate [is] -> lookupFM idb $ Template $ map (imgLookup files) is
+  _              -> Nothing
 
 -- | TODO (#strict) Force full, immediate evaluation of `Index`.
 index :: Files -> Index
@@ -88,7 +90,7 @@ index files = Index { indexOf = error "1"
     positions = mapFM (\_ v -> listToFM (<) v) $ listToFM (<) fps
 
   positionsHeldBy' :: Address -> SetRBT (Role, Address)
-  positionsHeldBy' = maybe (emptySetRBT (<)) id 
+  positionsHeldBy' = maybe (emptySetRBT (<)) id
                      . lookupFM (invertPositions fps)
 
 

@@ -65,8 +65,3 @@ data Index = Index {
   , positionsHeldBy :: Address -> SetRBT (Role, Address)
     -- ^ requires random access, because the set could be big
   }
-
-holdsPosition :: Index -> (Role, Address) -> Maybe Address
-holdsPosition i (r,a) = case positionsIn i a of
-  Nothing -> Nothing
-  Just ps -> lookupFM ps r

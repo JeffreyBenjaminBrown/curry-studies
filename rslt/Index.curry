@@ -1,3 +1,5 @@
+-- {-# OPTIONS_CYMAKE -F --pgmF=currypp --optF=defaultrules #-}
+
 module Index where
 
 import FiniteMap
@@ -5,6 +7,8 @@ import SetRBT
 
 import Rslt
 
+
+-- | = Build an `Index`
 
 exprVariety :: Expr -> (Expr', Arity)
 exprVariety (Word _)          = (Word'      , 0)
@@ -40,28 +44,51 @@ addInvertedPosition fm (a1, ras) = foldl f fm ras where
 
 -- | PITFALL: The input and output look similar, but they mean
 -- different things. The first is a list from addresses to the positions
--- they contain. The second is a list from addresses to the positions that
+-- they contain. The second is a map from addresses to the positions that
 -- contain them.
 invertPositions :: [( Address,       [(Role, Address)] )]
                 -> FM Address (SetRBT (Role, Address))
 invertPositions aras = foldl addInvertedPosition (emptyFM (<)) aras
 
--- | TODO #strict: force full evaluation of index immediately
+exprImgKey :: Expr -> Maybe Expr
+exprImgKey (Paragraph _ _) = Nothing
+-- exprImgKey'default x = Just x -- TODO : use this instead of the rest
+exprImgKey (Word x)              = Just $ Word x
+exprImgKey (Rel as a)            = Just $ Rel as a
+exprImgKey (Template as)         = Just $ Template as
+
+-- | TODO (#strict) Force full, immediate evaluation of `Index`.
 index :: Files -> Index
 index files = Index { indexOf = error "1"
-                 , variety = variety'
-                 , positionsHeldBy = positionsHeldBy'
-                 , positionsIn = positionsIn'
-                 } where
+                    , variety = variety'
+                    , positionsHeldBy = positionsHeldBy'
+                    , positionsIn = positionsIn'
+                    } where
+
   fps = filesPositions files :: [(Address, [(Role, Address)])]
+
+--  >>>
+--  indexOf' :: ImgOfExpr -> Address
+--  indexOf' (ImgOfExpr expr) = 
+
   variety' :: Address -> (Expr', Arity)
   variety' = maybe (error "Requested variety of Address not in Index.")
              id . lookupFM varieties
     where varieties = mapFM (\_ v -> exprVariety v) files
+
   positionsIn' :: Address -> Maybe (FM Role Address)
   positionsIn' = lookupFM positions where
     positions :: FM Address (FM Role Address)
     positions = mapFM (\_ v -> listToFM (<) v) $ listToFM (<) fps
+
   positionsHeldBy' :: Address -> SetRBT (Role, Address)
   positionsHeldBy' = maybe (emptySetRBT (<)) id 
                      . lookupFM (invertPositions fps)
+
+
+-- | = derivable from an `Index`
+
+holdsPosition :: Index -> (Role, Address) -> Maybe Address
+holdsPosition i (r,a) = case positionsIn i a of
+  Nothing -> Nothing
+  Just ps -> lookupFM ps r

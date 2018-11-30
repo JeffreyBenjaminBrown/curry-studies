@@ -1,6 +1,8 @@
 * (awaiting response) add Util.sort to the List module
 https://mail.google.com/mail/u/0/#sent/KtbxLvHkVTXWJFRfxzwlKdBtLNPMLtGMcL
 * minor
+** TODO easy : in Index.curry : enable something simpler
+-- exprImgKey'default x = Just x -- TODO : use this instead of the rest
 ** (awaiting response) Tests.curry:-- call `broken` fron the REPL?
  https://stackoverflow.com/questions/53547365/the-pakcs-repl-consider-something-undefined-but-the-module-defining-it-is-loade
 ** ? conflicting definitions in List

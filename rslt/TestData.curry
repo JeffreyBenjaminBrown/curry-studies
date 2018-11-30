@@ -17,4 +17,5 @@ testFiles = listToFM (<)
   , (6, Paragraph [("The first relationship in this graph is ", 5)] ".")
   ]
 
+testIndex :: Index
 testIndex = index testFiles

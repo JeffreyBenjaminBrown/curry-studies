@@ -18,6 +18,7 @@ data Expr = Word String
     -- Paragraphs are like Templates, in that |Members| + 1 = |Strings|.
     -- Paragraphs are like Lists, in that the weird bit comes last.
     -- Paragrpah is the only kind of Expr not in the index.
+  deriving (Show, Eq, Ord)
 
 data Role = RoleTemplate | RoleMember Int deriving (Show, Eq, Ord)
 
@@ -28,7 +29,7 @@ data ImgOfExpr = ImgOfExpr Expr
   | ImgOfWord String
   | ImgOfRel [ImgOfExpr] ImgOfExpr
     -- ^ the last ImgOfExpr in an ImgOfRel should be an image of a Template
-  | ImgOfTemplate [ImgOfExpr]
+  | ImgOfTemplate [ImgOfExpr] deriving (Show, Eq, Ord)
 
 class HasArity a where
   arity :: a -> Arity

@@ -1,4 +1,4 @@
-* test SomeData.curry:invertPositions'
+* add Util.sort to the List module
 * force full evaluation of index immediately
 * use ordinary hard-disk files rather than Rslt.Files
 * delete Rslt.Index.holdsPosition

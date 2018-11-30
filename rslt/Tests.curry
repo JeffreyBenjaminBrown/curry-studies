@@ -15,6 +15,7 @@ tests :: [Bool]
 tests = [ testAddInvertedPosition
         , testInvertPositions
         , testHoldsPosition
+        , testVariety
         ]
 
 testHoldsPosition :: Bool
@@ -26,6 +27,13 @@ testHoldsPosition = and
   , holdsPosition testIndex (RoleTemplate, 5) == Just 3
   , holdsPosition testIndex (RoleTemplate, 6) == Nothing
   ]
+
+testVariety :: Bool
+testVariety = and [ variety testIndex 3 == (Word',0)
+                  , variety testIndex 4 == (Template',3)
+                  , variety testIndex 5 == (Rel',2)
+                  , variety testIndex 6 == (Paragraph',1)
+                  ]
 
 testAddInvertedPosition :: Bool
 testAddInvertedPosition =

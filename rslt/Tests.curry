@@ -24,8 +24,8 @@ tests = [ testCheckDb
 
 testCheckDb :: Bool
 testCheckDb = and
-  [ (fmToList $ relsWithNonMatchingTemplates testFiles testIndex)
-    == [(1001,Rel [1,2] 5),(1002,Rel [1,2] 1)]
+  [ (fmToList $ relsWithoutMatchingTemplates testFiles testIndex) == [(1001, Rel [1,2] 5), (1002, Rel [1, 2] $ -1000)]
+ , (fmToList $ collectionsWithAbsentAddresses testFiles testIndex) == [(1002, [-1000])]
   ]
 
 testImgLookup :: Bool

@@ -2,6 +2,7 @@
 
 module Index where
 
+import Maybe (isNothing)
 import FiniteMap
 import SetRBT
 
@@ -18,8 +19,8 @@ index files = Index { indexOf = imgLookup files
                     , variety = variety'
                     , positionsIn = positionsIn'
                     , positionsHeldBy = positionsHeldBy'
-                    } where
-
+                    }
+ where
   fps = filesPositions files :: [(Address, [(Role, Address)])]
 
   variety' :: Address -> Maybe (Expr', Arity)
@@ -35,11 +36,30 @@ index files = Index { indexOf = imgLookup files
 
 -- | = Check the database
 
+collectionsWithAbsentAddresses :: Files -> Index -> FM Address [Address]
+collectionsWithAbsentAddresses files index = res where
+  res = filterFM (\_ v -> not $ null v)
+        $ mapFM (\_ v -> filter absent $ involved v) collections
+
+  absent :: Address -> Bool
+  absent = isNothing . variety index
+
+  involved :: Expr -> [Address]
+  involved (Word _)          = [] -- will not be used
+  involved (Template as)     = as
+  involved (Rel as a)        = a : as
+  involved (Paragraph sas _) = map snd sas
+
+  collections :: Files
+  collections = filterFM (\_ v -> isCollection v) files where
+    isCollection expr = case expr of Word _ -> False
+                                     _      -> True
+
 -- | Returns a list of bad `Address`es.
 -- TODO Report for each bad `Address` the kind of problem.
-relsWithNonMatchingTemplates :: Files -> Index -> Files
-relsWithNonMatchingTemplates files index =
-  filterFM (\_ e -> not $ relMatchesTemplateArity e) rels where
+relsWithoutMatchingTemplates :: Files -> Index -> Files
+relsWithoutMatchingTemplates files index = res where
+  res = filterFM (\_ e -> not $ relMatchesTemplateArity e) rels
 
   -- PITFALL: Intentionally partial (only Rels).
   relMatchesTemplateArity :: Expr -> Bool
@@ -48,9 +68,8 @@ relsWithNonMatchingTemplates files index =
     Just (ctr, art) -> case ctr of
       Template' -> arity e == art
       _         -> False
-
-  rels = filterFM pred files where
-    pred _ x   = isRel x
+ 
+  rels = filterFM (\_ v -> isRel v) files where
     isRel expr = case expr of Rel _ _ -> True
                               _       -> False
 

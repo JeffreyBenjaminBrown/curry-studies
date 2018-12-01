@@ -4,6 +4,14 @@
 **** datalog-style conditioning
 Every variable in a valid query must appear in an "immediate condition query", a "such-that query", or in a sub-call to some other valid query. 
 **** TODO kinds of queries
+***** TODO nested queries
+  "x #eat almonds ##because almonds #have y"
+  Let becauses = Rels of form "<> #because <>"
+      eats = Rels of form "<> #eat almonds"
+      haves = Rels of form "almonds #have <>"
+  Find all b,e,h s.t. b =:= "e #because h", 
+                      b in becauses, e in eats, h in haves.
+  Return (member 1 of e, member 2 of h).
 ***** one-jump queries
 ****** 'Show me every collection involving oxygen.'
     Find oxygen's `Addr`, "ao".
@@ -17,8 +25,10 @@ Every variable in a valid query must appear in an "immediate condition query", a
 ****** 'Show me every Rel of the form "<> #needs oxygen".'
     Do the first two.
     Take their intersection.
-***** TODO such-that queries
-****** 'Show me every x for which  "x #needs oxygen".'
+***** such-that queries
+****** 'Show me every x for which "x #needs oxygen".'
+Use one-jump queries to find every "<> #needs oxygen" Rel.
+Take the first member.
 ***** and, or
 ***** not
 ***** variety

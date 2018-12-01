@@ -8,6 +8,7 @@ import RedBlackTree
 import Rslt
 import Index
 import Index.Positions
+import Index.ImgLookup
 import TestData
 import Util
 
@@ -17,13 +18,20 @@ tests = [ testAddInvertedPosition
         , testInvertPositions
         , testHoldsPosition
         , testVariety
+        , testImgLookup
         ]
 
--- imgLookup testFiles $ ImgOfAddress $ 0
--- imgLookup testFiles $ ImgOfExpr $ Word "needs"
--- imgLookup testFiles $ ImgOfExpr $ Word "oxygen"
--- imgLookup testFiles $ ImgOfExpr $ Template [0,3,0]
--- imgLookup testFiles $ ImgOfTemplate [ImgOfAddress 0, ImgOfExpr $ Word "needs", ImgOfExpr $ Word ""]
+testImgLookup :: Bool
+testImgLookup = and
+  [ (imgLookup testFiles $ ImgOfAddress 0)               == Just 0
+  , (imgLookup testFiles $ ImgOfAddress $ -10000)        == Nothing
+  , (imgLookup testFiles $ ImgOfExpr $ Word "needs")     == Just 3
+  , (imgLookup testFiles $ ImgOfExpr $ Template [0,3,0]) == Just 4
+  , (imgLookup testFiles $ ImgOfTemplate [ImgOfAddress 0, ImgOfExpr $ Word "needs", ImgOfExpr $ Word ""]) == Just 4
+  
+  , (imgLookup testFiles $ ImgOfRel [ImgOfAddress 1, ImgOfExpr $ Word "oxygen"] $ ImgOfAddress 4) == Just 5
+  , (imgLookup testFiles $ ImgOfRel [ImgOfAddress 1, ImgOfExpr $ Word "oxygen"] $ ImgOfAddress 6) == Nothing
+  ]
 
 testHoldsPosition :: Bool
 testHoldsPosition = and
@@ -31,7 +39,7 @@ testHoldsPosition = and
   , holdsPosition testIndex (RoleMember 2, 4) == Just 3
   , holdsPosition testIndex (RoleMember 2, 5) == Just 2
   , holdsPosition testIndex (RoleMember 1, 5) == Just 1
-  , holdsPosition testIndex (RoleTemplate, 5) == Just 3
+  , holdsPosition testIndex (RoleTemplate, 5) == Just 4
   , holdsPosition testIndex (RoleTemplate, 6) == Nothing
   ]
 

@@ -9,37 +9,37 @@ import Rslt
 
 
 -- | = `positionsWithinAll` and `positionsHeldByAll` are roughly inverses:
--- `listToFM positionsWithinAll` is a map from `Address`es to
--- the positions  *contained by*  the `Expr` at the key `Address`.
--- `positionsHeldByAll`          is a map from `Address`es to
--- the positions  *that contain*  the `Expr` at the key `Address`.
+-- `listToFM positionsWithinAll` is a map from `Addr`es to
+-- the positions  *contained by*  the `Expr` at the key `Addr`.
+-- `positionsHeldByAll`          is a map from `Addr`es to
+-- the positions  *that contain*  the `Expr` at the key `Addr`.
 
-positionsWithinAll :: Files -> [(Address, [(Role, Address)])]
+positionsWithinAll :: Files -> [(Addr, [(Role, Addr)])]
 positionsWithinAll = filter (not . null . snd) . map f . fmToList where
-  f :: (Address, Expr) -> (Address, [(Role,Address)])
+  f :: (Addr, Expr) -> (Addr, [(Role,Addr)])
   f (a, expr) = (a, exprPositions expr)
 
-  exprPositions :: Expr -> [(Role,Address)]
+  exprPositions :: Expr -> [(Role,Addr)]
   exprPositions expr =
-    let r :: (Int, Address) -> (Role, Address)
+    let r :: (Int, Addr) -> (Role, Addr)
         r (n,a) = (RoleMember n, a)
     in case expr of
       Word _          -> []
-      Template mas    ->                     map r (zip [1..]           mas)
-      Rel mas ta      -> (RoleTemplate,ta) : map r (zip [1..]           mas)
-      Paragraph sas _ ->                     map r (zip [1..] $ map snd sas)
+      Tplt mas    ->                     map r (zip [1..]           mas)
+      Rel mas ta      -> (RoleTplt,ta) : map r (zip [1..]           mas)
+      Par sas _ ->                     map r (zip [1..] $ map snd sas)
 
-positionsHeldByAll :: [( Address,       [(Role, Address)] )]
-                -> FM Address (SetRBT (Role, Address))
+positionsHeldByAll :: [( Addr,       [(Role, Addr)] )]
+                -> FM Addr (SetRBT (Role, Addr))
 positionsHeldByAll aras = foldl addInvertedPosition (emptyFM (<)) aras where
 
-  addInvertedPosition :: FM Address (SetRBT (Role, Address))
-                      -> (Address, [(Role, Address)])
-                      -> FM Address (SetRBT (Role, Address))
+  addInvertedPosition :: FM Addr (SetRBT (Role, Addr))
+                      -> (Addr, [(Role, Addr)])
+                      -> FM Addr (SetRBT (Role, Addr))
   addInvertedPosition fm (a1, ras) = foldl f fm ras where
-    f :: FM Address (SetRBT (Role, Address))
-      ->                    (Role, Address)
-      -> FM Address (SetRBT (Role, Address))
+    f :: FM Addr (SetRBT (Role, Addr))
+      ->                    (Role, Addr)
+      -> FM Addr (SetRBT (Role, Addr))
     f fm (r,a) = addToFM_C unionRBT fm a newData
-      where newData :: SetRBT (Role, Address)
+      where newData :: SetRBT (Role, Addr)
             newData = insertRBT (r,a1) $ emptySetRBT (<)

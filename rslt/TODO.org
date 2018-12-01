@@ -1,6 +1,9 @@
 * to do
 ** features
 *** query the db
+"Show me everything that needs something."
+"Show me everything that needs oxygen."
+"Show me every Rel involving oxygen."
 *** represent rules in the db
 *** edit a db
 *** Hash

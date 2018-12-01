@@ -22,20 +22,20 @@ tests = [ testCheckDb
 
 testCheckDb :: Bool
 testCheckDb = and
-  [ (fmToList $ relsWithoutMatchingTemplates testBadFiles testIndex) == [(1001, Rel [1,2] 5), (1002, Rel [1, 2] $ -1000)]
- , (fmToList $ collectionsWithAbsentAddresses testBadFiles testIndex) == [(1002, [-1000])]
+  [ (fmToList $ relsWithoutMatchingTplts testBadFiles testIndex) == [(1001, Rel [1,2] 5), (1002, Rel [1, 2] $ -1000)]
+ , (fmToList $ collectionsWithAbsentAddrs testBadFiles testIndex) == [(1002, [-1000])]
   ]
 
 testImgLookup :: Bool
 testImgLookup = and
-  [ (imgLookup testFiles $ ImgOfAddress 0)               == Just 0
-  , (imgLookup testFiles $ ImgOfAddress $ -10000)        == Nothing
+  [ (imgLookup testFiles $ ImgOfAddr 0)               == Just 0
+  , (imgLookup testFiles $ ImgOfAddr $ -10000)        == Nothing
   , (imgLookup testFiles $ ImgOfExpr $ Word "needs")     == Just 3
-  , (imgLookup testFiles $ ImgOfExpr $ Template [0,3,0]) == Just 4
-  , (imgLookup testFiles $ ImgOfTemplate [ImgOfAddress 0, ImgOfExpr $ Word "needs", ImgOfExpr $ Word ""]) == Just 4
+  , (imgLookup testFiles $ ImgOfExpr $ Tplt [0,3,0]) == Just 4
+  , (imgLookup testFiles $ ImgOfTplt [ImgOfAddr 0, ImgOfExpr $ Word "needs", ImgOfExpr $ Word ""]) == Just 4
 
-  , (imgLookup testFiles $ ImgOfRel [ImgOfAddress 1, ImgOfExpr $ Word "oxygen"] $ ImgOfAddress 4) == Just 5
-  , (imgLookup testFiles $ ImgOfRel [ImgOfAddress 1, ImgOfExpr $ Word "oxygen"] $ ImgOfAddress 6) == Nothing
+  , (imgLookup testFiles $ ImgOfRel [ImgOfAddr 1, ImgOfExpr $ Word "oxygen"] $ ImgOfAddr 4) == Just 5
+  , (imgLookup testFiles $ ImgOfRel [ImgOfAddr 1, ImgOfExpr $ Word "oxygen"] $ ImgOfAddr 6) == Nothing
   ]
 
 testHoldsPosition :: Bool
@@ -44,15 +44,15 @@ testHoldsPosition = and
   , holdsPosition testIndex (RoleMember 2, 4) == Just 3
   , holdsPosition testIndex (RoleMember 2, 5) == Just 2
   , holdsPosition testIndex (RoleMember 1, 5) == Just 1
-  , holdsPosition testIndex (RoleTemplate, 5) == Just 4
-  , holdsPosition testIndex (RoleTemplate, 6) == Nothing
+  , holdsPosition testIndex (RoleTplt, 5) == Just 4
+  , holdsPosition testIndex (RoleTplt, 6) == Nothing
   ]
 
 testVariety :: Bool
 testVariety = and [ variety testIndex 3 == Just (Word',0)
-                  , variety testIndex 4 == Just (Template',2)
+                  , variety testIndex 4 == Just (Tplt',2)
                   , variety testIndex 5 == Just (Rel',2)
-                  , variety testIndex 6 == Just (Paragraph',1)
+                  , variety testIndex 6 == Just (Par',1)
                   , variety testIndex (-133) == Nothing
                   ]
 

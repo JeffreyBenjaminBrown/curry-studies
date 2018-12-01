@@ -12,9 +12,9 @@ testFiles = listToFM (<)
   , (1, Word "dog")
   , (2, Word "oxygen")
   , (3, Word "needs")
-  , (4, Template [0,3,0])
+  , (4, Tplt [0,3,0])
   , (5, Rel [1,2] 4)
-  , (6, Paragraph [("The first relationship in this graph is ", 5)] ".")
+  , (6, Par [("The first relationship in this graph is ", 5)] ".")
   ]
 
 testBadFiles :: Files

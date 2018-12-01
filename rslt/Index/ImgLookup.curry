@@ -11,31 +11,31 @@ import Util (hasANothing)
 
 exprVariety :: Expr -> (Expr', Arity)
 exprVariety   (Word      _)   = (Word'      , 0)
-exprVariety e@(Template  _)   = (Template'  , arity e)
+exprVariety e@(Tplt  _)   = (Tplt'  , arity e)
 exprVariety e@(Rel       _ _) = (Rel'       , arity e)
-exprVariety e@(Paragraph _ _) = (Paragraph' , arity e)
+exprVariety e@(Par _ _) = (Par' , arity e)
 
-imgDb :: Files -> FM Expr Address
+imgDb :: Files -> FM Expr Addr
 imgDb = listToFM (<) . catMaybes . map f . fmToList where
   f (addr, expr) = case exprImgKey expr of
     Nothing -> Nothing
     _       -> Just (expr, addr)
 
   exprImgKey :: Expr -> Maybe Expr
-  exprImgKey e = case e of Paragraph _ _ -> Nothing
+  exprImgKey e = case e of Par _ _ -> Nothing
                            _             -> Just e
 
-imgLookup :: Files -> ImgOfExpr -> Maybe Address
+imgLookup :: Files -> ImgOfExpr -> Maybe Addr
 imgLookup files img = let idb = imgDb files in case img of
 
   ImgOfExpr    e -> lookupFM idb e
-  ImgOfAddress a -> maybe Nothing (const $ Just a) $ lookupFM files a
+  ImgOfAddr a -> maybe Nothing (const $ Just a) $ lookupFM files a
 
-  ImgOfTemplate is ->
+  ImgOfTplt is ->
     let mas = map (imgLookup files) is
     in case hasANothing mas of
          True -> Nothing
-         False -> lookupFM idb $ Template $ catMaybes mas
+         False -> lookupFM idb $ Tplt $ catMaybes mas
 
   ImgOfRel is i ->
     let mas = map (imgLookup files) is

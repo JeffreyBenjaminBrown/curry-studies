@@ -30,24 +30,19 @@ data Role = RoleTemplate | RoleMember Int deriving (Show, Eq, Ord)
 data ImgOfExpr = ImgOfExpr Expr
   | ImgOfAddress Address
   | ImgOfRel [ImgOfExpr] ImgOfExpr
-    -- ^ the last ImgOfExpr in an ImgOfRel should be an image of a Template
   | ImgOfTemplate [ImgOfExpr] deriving (Show, Eq, Ord)
 
-class HasArity a where
-  arity :: a -> Arity
-
-instance HasArity Expr where
-  arity (Word _)        = 0
-  arity (Rel x _)       = length x
-  arity (Template x)    = length x - 1
-  arity (Paragraph x _) = length x
+arity :: Expr -> Arity
+arity (Word _)        = 0
+arity (Rel x _)       = length x
+arity (Template x)    = length x - 1
+arity (Paragraph x _) = length x
 
 
--- | = "A graph" = one `Files` + one `Index`.
+-- | = A "database" = one `Files` + one `Index`.
 -- The index is derived from the files.
 
--- | The Files are used to retrieve the text of Words and Paragraphs.
--- Everything in the Index can be derived from the Files.
+-- | The `Files` are used to retrieve the text of Words and Paragraphs.
 type Files = FM Int Expr -- TODO use ordinary hard-disk files
 
 instance (Show a, Show b) => Show (FM a b) where
@@ -56,11 +51,11 @@ instance (Show a, Show b) => Show (FM a b) where
 data DbError = AddressNotInDb Address
   | RelDoesNotMatchTemplateInArity Address
 
--- | The Index can answer every fundamental connectivity question:
+-- | The `Index` can answer every fundamental connectivity question:
 -- What is in something, what is something in, etc.
--- It can also find anything findable -- i.e. anything but a Paragraph.
+-- It can also find anything findable -- i.e. anything but a `Paragraph`.
 data Index = Index {
-  indexOf           :: ImgOfExpr -> Maybe Address
+  addressOf         :: ImgOfExpr -> Maybe Address
   , variety         :: Address   -> Maybe (Expr', Arity)
   , positionsIn     :: Address   -> Maybe (FM Role Address)
   , positionsHeldBy :: Address   -> Maybe (SetRBT (Role, Address))

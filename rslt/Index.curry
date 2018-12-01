@@ -13,26 +13,31 @@ import Index.ImgLookup
 
 -- | = Build the database
 
--- | TODO (#strict) Force full, immediate evaluation of `Index`.
+-- TODO (#strict) Evaluate `Index` completely at start of program.
 index :: Files -> Index
-index files = Index { indexOf = imgLookup files
-                    , variety = variety'
-                    , positionsIn = positionsIn'
+index files = Index { addressOf       = imgLookup files
+                    , variety         = variety'
+                    , positionsIn     = positionsIn'
                     , positionsHeldBy = positionsHeldBy'
                     }
  where
   fps = filesPositions files :: [(Address, [(Role, Address)])]
 
   variety' :: Address -> Maybe (Expr', Arity)
-  variety' = lookupFM $ mapFM (\_ v -> exprVariety v) files
+  variety' = lookupFM varieties where
+    -- (#strict) Build `varieties` completely first.
+    varieties = mapFM (\_ v -> exprVariety v) files
 
   positionsIn' :: Address -> Maybe (FM Role Address)
   positionsIn' = lookupFM positions where
+    -- (#strict) Build `positions` completely first.
     positions :: FM Address (FM Role Address)
     positions = mapFM (\_ v -> listToFM (<) v) $ listToFM (<) fps
 
   positionsHeldBy' :: Address -> Maybe (SetRBT (Role, Address))
   positionsHeldBy' = lookupFM $ invertPositions fps
+    -- (#strict) Build `invertPositions fps` completely first.
+
 
 -- | = Check the database
 
@@ -45,7 +50,7 @@ collectionsWithAbsentAddresses files index = res where
   absent = isNothing . variety index
 
   involved :: Expr -> [Address]
-  involved (Word _)          = [] -- will not be used
+  involved (Word _)          = error "impossible"
   involved (Template as)     = as
   involved (Rel as a)        = a : as
   involved (Paragraph sas _) = map snd sas
@@ -72,6 +77,7 @@ relsWithoutMatchingTemplates files index = res where
   rels = filterFM (\_ v -> isRel v) files where
     isRel expr = case expr of Rel _ _ -> True
                               _       -> False
+
 
 -- | = derivable from an `Index`
 

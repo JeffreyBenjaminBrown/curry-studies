@@ -17,7 +17,6 @@ tests = [ testCheckDb
         , testImgLookup
         , testHoldsPosition
         , testVariety
-        , testAddInvertedPosition
         , testInvertPositions
         ]
 
@@ -56,15 +55,6 @@ testVariety = and [ variety testIndex 3 == Just (Word',0)
                   , variety testIndex 6 == Just (Paragraph',1)
                   , variety testIndex (-133) == Nothing
                   ]
-
-testAddInvertedPosition :: Bool
-testAddInvertedPosition =
-  fmToList ( mapFM (\_ v -> sort (<) $ setRBT2list v)
-             $ addInvertedPosition (emptyFM (<)) (1, [ (RoleMember 1, 11)
-                                                     , (RoleMember 2, 22) ] )
-           ) == [ (11, [(RoleMember 1,1)] )
-                , (22, [(RoleMember 2,1)] )
-                ]
 
 testInvertPositions :: Bool
 testInvertPositions =

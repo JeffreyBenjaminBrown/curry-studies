@@ -10,6 +10,8 @@ import RedBlackTree as M
 
 import Rslt as M
 import Index as M
+import Index.Positions as M
+import Index.ImgLookup as M
 import TestData as M
 import Tests as M
 import Util as M

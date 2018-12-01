@@ -7,6 +7,7 @@ import RedBlackTree
 
 import Rslt
 import Index
+import Index.Positions
 import TestData
 import Util
 
@@ -35,10 +36,11 @@ testHoldsPosition = and
   ]
 
 testVariety :: Bool
-testVariety = and [ variety testIndex 3 == (Word',0)
-                  , variety testIndex 4 == (Template',3)
-                  , variety testIndex 5 == (Rel',2)
-                  , variety testIndex 6 == (Paragraph',1)
+testVariety = and [ variety testIndex 3 == Just (Word',0)
+                  , variety testIndex 4 == Just (Template',3)
+                  , variety testIndex 5 == Just (Rel',2)
+                  , variety testIndex 6 == Just (Paragraph',1)
+                  , variety testIndex (-133) == Nothing
                   ]
 
 testAddInvertedPosition :: Bool

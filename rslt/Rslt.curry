@@ -57,10 +57,8 @@ instance (Show a, Show b) => Show (FM a b) where
 -- What is in something, what is something in, etc.
 -- It can also find anything findable -- i.e. anything but a Paragraph.
 data Index = Index {
-  indexOf :: ImgOfExpr -> Maybe Address
-  , variety :: Address -> (Expr', Arity)
-  , positionsIn :: Address -> Maybe (FM Role Address)
-    -- ^ whereas this set is probably small
-  , positionsHeldBy :: Address -> SetRBT (Role, Address)
-    -- ^ requires random access, because the set could be big
+  indexOf           :: ImgOfExpr -> Maybe Address
+  , variety         :: Address   -> Maybe (Expr', Arity)
+  , positionsIn     :: Address   -> Maybe (FM Role Address)
+  , positionsHeldBy :: Address   -> Maybe (SetRBT (Role, Address))
   }

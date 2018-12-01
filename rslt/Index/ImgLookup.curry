@@ -10,21 +10,20 @@ import Util (hasANothing)
 
 
 exprVariety :: Expr -> (Expr', Arity)
-exprVariety e@(Word      _)   = (Word'      , 0)
+exprVariety   (Word      _)   = (Word'      , 0)
 exprVariety e@(Template  _)   = (Template'  , arity e)
 exprVariety e@(Rel       _ _) = (Rel'       , arity e)
 exprVariety e@(Paragraph _ _) = (Paragraph' , arity e)
-
--- | Produces the kind of key used to look up `ImgOfExpr`s.
-exprImgKey :: Expr -> Maybe Expr
-exprImgKey (Paragraph _ _) = Nothing
-exprImgKey'default x = Just x -- TODO : Why the warning?
 
 imgDb :: Files -> FM Expr Address
 imgDb = listToFM (<) . catMaybes . map f . fmToList where
   f (addr, expr) = case exprImgKey expr of
     Nothing -> Nothing
     _       -> Just (expr, addr)
+
+  exprImgKey :: Expr -> Maybe Expr
+  exprImgKey e = case e of Paragraph _ _ -> Nothing
+                           _             -> Just e
 
 imgLookup :: Files -> ImgOfExpr -> Maybe Address
 imgLookup files img = let idb = imgDb files in case img of

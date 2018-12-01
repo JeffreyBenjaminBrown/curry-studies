@@ -21,7 +21,7 @@ index files = Index { addressOf       = imgLookup files
                     , positionsHeldBy = positionsHeldBy'
                     }
  where
-  fps = filesPositions files :: [(Address, [(Role, Address)])]
+  fps = positionsWithinAll files :: [(Address, [(Role, Address)])]
 
   variety' :: Address -> Maybe (Expr', Arity)
   variety' = lookupFM varieties where
@@ -35,8 +35,8 @@ index files = Index { addressOf       = imgLookup files
     positions = mapFM (\_ v -> listToFM (<) v) $ listToFM (<) fps
 
   positionsHeldBy' :: Address -> Maybe (SetRBT (Role, Address))
-  positionsHeldBy' = lookupFM $ invertPositions fps
-    -- (#strict) Build `invertPositions fps` completely first.
+  positionsHeldBy' = lookupFM $ positionsHeldByAll fps
+    -- (#strict) Build `positionsHeldByAll fps` completely first.
 
 
 -- | = Check the database

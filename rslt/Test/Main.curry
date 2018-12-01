@@ -58,7 +58,7 @@ testVariety = and [ variety testIndex 3 == Just (Word',0)
 
 testInvertPositions :: Bool
 testInvertPositions =
-  let ips = invertPositions [ (1, [ (RoleMember 1, 11)
+  let ips = positionsHeldByAll [ (1, [ (RoleMember 1, 11)
                                   , (RoleMember 2, 22) ] )
                             , (11, [ (RoleMember 1, 1)
                                    , (RoleMember 2, 22) ] )

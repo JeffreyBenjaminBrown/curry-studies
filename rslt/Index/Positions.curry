@@ -8,8 +8,14 @@ import SetRBT
 import Rslt
 
 
-filesPositions :: Files -> [(Address, [(Role, Address)])]
-filesPositions = filter (not . null . snd) . map f . fmToList where
+-- | = `positionsWithinAll` and `positionsHeldByAll` are roughly inverses:
+-- `listToFM positionsWithinAll` is a map from `Address`es to
+-- the positions  *contained by*  the `Expr` at the key `Address`.
+-- `positionsHeldByAll`          is a map from `Address`es to
+-- the positions  *that contain*  the `Expr` at the key `Address`.
+
+positionsWithinAll :: Files -> [(Address, [(Role, Address)])]
+positionsWithinAll = filter (not . null . snd) . map f . fmToList where
   f :: (Address, Expr) -> (Address, [(Role,Address)])
   f (a, expr) = (a, exprPositions expr)
 
@@ -23,13 +29,9 @@ filesPositions = filter (not . null . snd) . map f . fmToList where
       Rel mas ta      -> (RoleTemplate,ta) : map r (zip [1..]           mas)
       Paragraph sas _ ->                     map r (zip [1..] $ map snd sas)
 
--- | PITFALL: The input and output look similar, but they mean
--- different things. The first is a list from addresses to the positions
--- they contain. The second is a map from addresses to the positions that
--- contain them.
-invertPositions :: [( Address,       [(Role, Address)] )]
+positionsHeldByAll :: [( Address,       [(Role, Address)] )]
                 -> FM Address (SetRBT (Role, Address))
-invertPositions aras = foldl addInvertedPosition (emptyFM (<)) aras where
+positionsHeldByAll aras = foldl addInvertedPosition (emptyFM (<)) aras where
 
   addInvertedPosition :: FM Address (SetRBT (Role, Address))
                       -> (Address, [(Role, Address)])

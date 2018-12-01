@@ -14,10 +14,14 @@ testFiles = listToFM (<)
   , (3, Word "needs")
   , (4, Template [0,3,0])
   , (5,    Rel [1,2] 4)
-  , (1001, Rel [1,2] 5)       -- bad, on purpose
-  , (1002, Rel [1,2] (-1000)) -- bad, on purpose
   , (6, Paragraph [("The first relationship in this graph is ", 5)] ".")
   ]
+
+testBadFiles :: Files
+testBadFiles = foldl (\fm (k,v) -> addToFM fm k v)  testFiles newData where
+  newData = [ (1001, Rel [1,2] 5)
+            , (1002, Rel [1,2] (-1000))
+            ]
 
 testIndex :: Index
 testIndex = index testFiles

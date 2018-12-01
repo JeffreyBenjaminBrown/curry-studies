@@ -60,7 +60,6 @@ collectionsWithAbsentAddresses files index = res where
     isCollection expr = case expr of Word _ -> False
                                      _      -> True
 
--- | Returns a list of bad `Address`es.
 -- TODO Report for each bad `Address` the kind of problem.
 relsWithoutMatchingTemplates :: Files -> Index -> Files
 relsWithoutMatchingTemplates files index = res where

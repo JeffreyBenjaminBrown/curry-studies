@@ -22,8 +22,8 @@ tests = [ testCheckDb
 
 testCheckDb :: Bool
 testCheckDb = and
-  [ (fmToList $ relsWithoutMatchingTemplates testFiles testIndex) == [(1001, Rel [1,2] 5), (1002, Rel [1, 2] $ -1000)]
- , (fmToList $ collectionsWithAbsentAddresses testFiles testIndex) == [(1002, [-1000])]
+  [ (fmToList $ relsWithoutMatchingTemplates testBadFiles testIndex) == [(1001, Rel [1,2] 5), (1002, Rel [1, 2] $ -1000)]
+ , (fmToList $ collectionsWithAbsentAddresses testBadFiles testIndex) == [(1002, [-1000])]
   ]
 
 testImgLookup :: Bool
@@ -33,7 +33,7 @@ testImgLookup = and
   , (imgLookup testFiles $ ImgOfExpr $ Word "needs")     == Just 3
   , (imgLookup testFiles $ ImgOfExpr $ Template [0,3,0]) == Just 4
   , (imgLookup testFiles $ ImgOfTemplate [ImgOfAddress 0, ImgOfExpr $ Word "needs", ImgOfExpr $ Word ""]) == Just 4
-  
+
   , (imgLookup testFiles $ ImgOfRel [ImgOfAddress 1, ImgOfExpr $ Word "oxygen"] $ ImgOfAddress 4) == Just 5
   , (imgLookup testFiles $ ImgOfRel [ImgOfAddress 1, ImgOfExpr $ Word "oxygen"] $ ImgOfAddress 6) == Nothing
   ]

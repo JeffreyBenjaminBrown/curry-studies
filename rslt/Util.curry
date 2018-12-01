@@ -5,6 +5,12 @@ import List
 import SetRBT
 
 
+-- | `f` is for `flexible`
+fElem :: Eq a => a -> [a] -> Bool
+fElem a (a : _)  = True
+fElem a (_ : as) = fElem a as
+fElem _ []       = False
+
 listToSetRBT :: Ord a => [a] -> SetRBT a
 listToSetRBT = foldl (flip insertRBT) $ emptySetRBT (<)
 

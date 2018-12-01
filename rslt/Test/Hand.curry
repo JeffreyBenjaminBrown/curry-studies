@@ -14,13 +14,6 @@ import Test.Data
 import Util
 
 
--- | `f` is for `flexible`
-fElem :: Eq a => a -> [a] -> Bool
-fElem a (a : _)  = True
-fElem a (_ : as) = fElem a as
-fElem _ []       = False
-
-
 -- | = Solve for values in a list
 
 -- | Suspends, I imagine because `elem` is rigid.

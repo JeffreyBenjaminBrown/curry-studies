@@ -8,12 +8,12 @@ type Addr = Int -- ^ Address
 type Arity = Int
 
 data Expr = Word String -- ^ (Could be a phrase too.)
-  | Rel [Addr] Addr -- ^ Relationship.
+  | Rel [Addr] Addr -- ^ "Relationship".
     -- The last `Addr` (the one not in the list) should be to a `Tplt`.
     -- `Rel`s are like lists in that the weird bit (`Nil|Tplt`) comes last.
-  | Tplt [Addr] -- ^ "Template" for a `Rel`, like "_ needs _ sometimes."
+  | Tplt [Addr] -- ^ A "template" for a `Rel`, like "_ needs _ sometimes."
                 -- The `Addr`s are probably to `Word`s.
-  | Par [(String, Addr)] String -- ^ Paragraph.
+  | Par [(String, Addr)] String -- ^ "Paragraph".
     -- The `String`s in a `Par` are like a single-use `Tplt`.
     -- A `Par` has Members, but (unlike a `Rel`) no `Tplt`.
     -- `Par`s are like `Tplt`s, in that |Members| + 1 = |`String`s|.
@@ -29,9 +29,9 @@ data Role = RoleTplt | RoleMember Int deriving (Show, Eq, Ord)
 -- | Something used to locate an `Expr` in an `Index`,
 -- given varying degrees of identifying information.
 data ImgOfExpr = ImgOfExpr Expr
-  | ImgOfAddr Addr
-  | ImgOfRel [ImgOfExpr] ImgOfExpr
-  | ImgOfTplt [ImgOfExpr] deriving (Show, Eq, Ord)
+               | ImgOfAddr Addr
+               | ImgOfRel  [ImgOfExpr] ImgOfExpr
+               | ImgOfTplt [ImgOfExpr] deriving (Show, Eq, Ord)
 
 arity :: Expr -> Arity
 arity (Word _)        = 0
@@ -57,7 +57,7 @@ data DbError = AddrNotInDb  Addr
 -- It can also find anything findable -- i.e. anything but a `Par`.
 data Index = Index {
   addressOf         :: ImgOfExpr -> Maybe Addr
-  , variety         :: Addr   -> Maybe (Expr', Arity)
-  , positionsIn     :: Addr   -> Maybe (FM Role Addr)
-  , positionsHeldBy :: Addr   -> Maybe (SetRBT (Role, Addr))
+  , variety         :: Addr      -> Maybe (Expr', Arity)
+  , positionsIn     :: Addr      -> Maybe (FM Role Addr)
+  , positionsHeldBy :: Addr      -> Maybe (SetRBT (Role, Addr))
   }

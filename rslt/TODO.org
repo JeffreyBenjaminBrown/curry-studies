@@ -1,9 +1,18 @@
 * to do
 ** features
 *** query the db
-"Show me everything that needs something."
-"Show me everything that needs oxygen."
-"Show me every Rel involving oxygen."
+**** "Show me every collection involving oxygen."
+  Find oxygen's `Addr`, "ao".
+  Run `positionsHeldBy index ao` to get a set of `(Role, Addr)`s.
+  Return all those `Addr`s.
+**** "Show me everything that needs something."
+  Find the address "at" of the template "_ needs _".
+  Run `positionsHeldBy index at` to get a set of `(Role, Addr)`s.
+  Keep only the ones for which the `Role` is a `RoleTplt`.
+  Return all the `Addr`s remaining.
+**** "Show me everything that needs oxygen."
+  Do the first two.
+  Take their intersection.
 *** represent rules in the db
 *** edit a db
 *** Hash

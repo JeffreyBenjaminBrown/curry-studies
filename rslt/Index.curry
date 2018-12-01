@@ -9,6 +9,7 @@ import SetRBT
 import Rslt
 import Index.Positions
 import Index.ImgLookup
+import Util (fElem)
 
 
 -- | = Build the database
@@ -84,3 +85,9 @@ holdsPosition :: Index -> (Role, Addr) -> Maybe Addr
 holdsPosition i (r,a) = case positionsIn i a of
   Nothing -> Nothing
   Just ps -> lookupFM ps r
+
+hasMember :: Index -> Addr -> Addr
+hasMember i a0
+  | Just s =:= positionsHeldBy i a0
+    & fElem (RoleMember _, a) (setRBT2list s)
+  = a where a,s free

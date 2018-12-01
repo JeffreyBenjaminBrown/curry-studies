@@ -10,10 +10,10 @@ import Util (hasANothing)
 
 
 exprVariety :: Expr -> (Expr', Arity)
-exprVariety (Word _)          = (Word'      , 0)
-exprVariety (Template mas)    = (Template'  , length mas)
-exprVariety (Rel mas _)       = (Rel'       , length mas)
-exprVariety (Paragraph sas _) = (Paragraph' , length sas)
+exprVariety e@(Word      _)   = (Word'      , 0)
+exprVariety e@(Template  _)   = (Template'  , arity e)
+exprVariety e@(Rel       _ _) = (Rel'       , arity e)
+exprVariety e@(Paragraph _ _) = (Paragraph' , arity e)
 
 -- | Produces the kind of key used to look up `ImgOfExpr`s.
 exprImgKey :: Expr -> Maybe Expr

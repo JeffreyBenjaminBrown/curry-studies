@@ -10,6 +10,8 @@ import Index.Positions
 import Index.ImgLookup
 
 
+-- | = Build the database
+
 -- | TODO (#strict) Force full, immediate evaluation of `Index`.
 index :: Files -> Index
 index files = Index { indexOf = imgLookup files
@@ -31,6 +33,26 @@ index files = Index { indexOf = imgLookup files
   positionsHeldBy' :: Address -> Maybe (SetRBT (Role, Address))
   positionsHeldBy' = lookupFM $ invertPositions fps
 
+-- | = Check the database
+
+-- | Returns a list of bad `Address`es.
+-- TODO Report for each bad `Address` the kind of problem.
+relsWithNonMatchingTemplates :: Files -> Index -> Files
+relsWithNonMatchingTemplates files index =
+  filterFM (\_ e -> not $ relMatchesTemplateArity e) rels where
+
+  -- PITFALL: Intentionally partial (only Rels).
+  relMatchesTemplateArity :: Expr -> Bool
+  relMatchesTemplateArity e@(Rel _ t) = case variety index t of
+    Nothing         -> False
+    Just (ctr, art) -> case ctr of
+      Template' -> arity e == art
+      _         -> False
+
+  rels = filterFM pred files where
+    pred _ x   = isRel x
+    isRel expr = case expr of Rel _ _ -> True
+                              _       -> False
 
 -- | = derivable from an `Index`
 

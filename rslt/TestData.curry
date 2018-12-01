@@ -13,7 +13,9 @@ testFiles = listToFM (<)
   , (2, Word "oxygen")
   , (3, Word "needs")
   , (4, Template [0,3,0])
-  , (5, Rel [1,2] 4)
+  , (5,    Rel [1,2] 4)
+  , (1001, Rel [1,2] 5) -- bad, on purpose
+  , (1002, Rel [1,2] 1) -- bad, on purpose
   , (6, Paragraph [("The first relationship in this graph is ", 5)] ".")
   ]
 

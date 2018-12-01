@@ -39,7 +39,7 @@ class HasArity a where
 instance HasArity Expr where
   arity (Word _)        = 0
   arity (Rel x _)       = length x
-  arity (Template x)    = length x
+  arity (Template x)    = length x - 1
   arity (Paragraph x _) = length x
 
 
@@ -52,6 +52,9 @@ type Files = FM Int Expr -- TODO use ordinary hard-disk files
 
 instance (Show a, Show b) => Show (FM a b) where
   show = show . fmToList
+
+data DbError = AddressNotInDb Address
+  | RelDoesNotMatchTemplateInArity Address
 
 -- | The Index can answer every fundamental connectivity question:
 -- What is in something, what is something in, etc.

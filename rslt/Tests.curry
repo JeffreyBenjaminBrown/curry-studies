@@ -14,12 +14,19 @@ import Util
 
 
 tests :: [Bool]
-tests = [ testAddInvertedPosition
-        , testInvertPositions
+tests = [ testCheckDb
+        , testImgLookup
         , testHoldsPosition
         , testVariety
-        , testImgLookup
+        , testAddInvertedPosition
+        , testInvertPositions
         ]
+
+testCheckDb :: Bool
+testCheckDb = and
+  [ (fmToList $ relsWithNonMatchingTemplates testFiles testIndex)
+    == [(1001,Rel [1,2] 5),(1002,Rel [1,2] 1)]
+  ]
 
 testImgLookup :: Bool
 testImgLookup = and
@@ -45,7 +52,7 @@ testHoldsPosition = and
 
 testVariety :: Bool
 testVariety = and [ variety testIndex 3 == Just (Word',0)
-                  , variety testIndex 4 == Just (Template',3)
+                  , variety testIndex 4 == Just (Template',2)
                   , variety testIndex 5 == Just (Rel',2)
                   , variety testIndex 6 == Just (Paragraph',1)
                   , variety testIndex (-133) == Nothing

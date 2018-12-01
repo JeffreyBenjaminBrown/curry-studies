@@ -79,15 +79,32 @@ relsWithoutMatchingTplts files index = res where
                               _       -> False
 
 
--- | = derivable from an `Index`
+-- | == derivable from an `Index`
+
+-- | = deterministic search
 
 holdsPosition :: Index -> (Role, Addr) -> Maybe Addr
 holdsPosition i (r,a) = case positionsIn i a of
   Nothing -> Nothing
   Just ps -> lookupFM ps r
 
-hasMember :: Index -> Addr -> Addr
-hasMember i a0
+
+-- | = non-deterministic search
+
+somethingThatHolds           :: Index -> Addr -> Addr
+somethingThatHolds i a0
   | Just s =:= positionsHeldBy i a0
     & fElem (RoleMember _, a) (setRBT2list s)
+  = a where a,s free
+
+somethingThatHoldsAtPosition :: Index -> Addr -> Int -> Addr
+somethingThatHoldsAtPosition i a0 pos
+  | Just s =:= positionsHeldBy i a0
+    & fElem (RoleMember pos, a) (setRBT2list s)
+  = a where a,s free
+
+aRelUsingTemplate            :: Index -> Addr -> Addr
+aRelUsingTemplate i a0
+  | Just s =:= positionsHeldBy i a0
+    & fElem (RoleTplt, a) (setRBT2list s)
   = a where a,s free

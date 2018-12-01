@@ -1,4 +1,4 @@
-module TestData where
+module Test.Data where
 
 import FiniteMap
 

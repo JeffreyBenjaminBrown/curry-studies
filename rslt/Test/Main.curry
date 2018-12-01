@@ -1,5 +1,4 @@
-module Tests where
-
+module Test.Main where
 
 import FiniteMap
 import SetRBT
@@ -9,7 +8,7 @@ import Rslt
 import Index
 import Index.Positions
 import Index.ImgLookup
-import TestData
+import Test.Data
 import Util
 
 

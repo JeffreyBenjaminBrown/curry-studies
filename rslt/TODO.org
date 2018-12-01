@@ -1,21 +1,31 @@
 * to do
 ** features
 *** query the db
-**** "Show me every collection involving oxygen."
-  Find oxygen's `Addr`, "ao".
-  Run `positionsHeldBy index ao` to get a set of `(Role, Addr)`s.
-  Return all those `Addr`s.
-**** "Show me everything that needs something."
-  Find the address "at" of the template "_ needs _".
-  Run `positionsHeldBy index at` to get a set of `(Role, Addr)`s.
-  Keep only the ones for which the `Role` is a `RoleTplt`.
-  Return all the `Addr`s remaining.
-**** "Show me everything that needs oxygen."
-  Do the first two.
-  Take their intersection.
+**** datalog-style conditioning
+Every variable in a valid query must appear in an "immediate condition query", a "such-that query", or in a sub-call to some other valid query. 
+**** TODO kinds of queries
+***** one-jump queries
+****** 'Show me every collection involving oxygen.'
+    Find oxygen's `Addr`, "ao".
+    Run `positionsHeldBy index ao` to get a set of `(Role, Addr)`s.
+    Return all those `Addr`s.
+****** 'Show me every Rel using the "<> #needs <>" Tplt.'
+    Find the address "at" of the template "<> needs <>".
+    Run `positionsHeldBy index at` to get a set of `(Role, Addr)`s.
+    Keep only the ones for which the `Role` is a `RoleTplt`.
+    Return all the `Addr`s remaining.
+****** 'Show me every Rel of the form "<> #needs oxygen".'
+    Do the first two.
+    Take their intersection.
+***** TODO such-that queries
+****** 'Show me every x for which  "x #needs oxygen".'
+***** and, or
+***** not
+***** variety
+**** a query type
 *** represent rules in the db
-*** edit a db
 *** Hash
+*** edit a db
 ** minor
 *** (awaiting response) Tests.curry:-- call `broken` fron the REPL?
   https://stackoverflow.com/questions/53547365/the-pakcs-repl-consider-something-undefined-but-the-module-defining-it-is-loade

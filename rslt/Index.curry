@@ -12,7 +12,7 @@ import Index.ImgLookup
 import Util (fElem)
 
 
--- | = Build the database
+-- | == Build the database
 
 -- TODO (#strict) Evaluate `Index` completely at start of program.
 index :: Files -> Index
@@ -40,7 +40,7 @@ index files = Index { addressOf       = imgLookup files
     -- (#strict) Build `positionsHeldByAll fps` completely first.
 
 
--- | = Check the database
+-- | == Check the database
 
 collectionsWithAbsentAddrs :: Files -> Index -> FM Addr [Addr]
 collectionsWithAbsentAddrs files index = res where
@@ -61,7 +61,7 @@ collectionsWithAbsentAddrs files index = res where
     isCollection expr = case expr of Word _ -> False
                                      _      -> True
 
--- TODO Report for each bad `Addr` the kind of problem.
+-- TODO ? Report for each bad `Addr` the kind of problem.
 relsWithoutMatchingTplts :: Files -> Index -> Files
 relsWithoutMatchingTplts files index = res where
   res = filterFM (\_ e -> not $ relMatchesTpltArity e) rels

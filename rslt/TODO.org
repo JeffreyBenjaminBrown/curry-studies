@@ -1,23 +1,29 @@
-* (awaiting response) add Util.sort to the List module
-https://mail.google.com/mail/u/0/#sent/KtbxLvHkVTXWJFRfxzwlKdBtLNPMLtGMcL
-* minor
-** (awaiting response) Tests.curry:-- call `broken` fron the REPL?
- https://stackoverflow.com/questions/53547365/the-pakcs-repl-consider-something-undefined-but-the-module-defining-it-is-loade
-** ? conflicting definitions in List
-*** if I add this line to All.curry:
-import List as M
-*** then I get these errors
-/home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/List.icurry, line 6.1: Error:
-    Multiple exports of name `delete' at:
-      line 6.1
-      line 4.1
+* to do
+** minor
+*** (awaiting response) Tests.curry:-- call `broken` fron the REPL?
+  https://stackoverflow.com/questions/53547365/the-pakcs-repl-consider-something-undefined-but-the-module-defining-it-is-loade
+*** Index.exprImgKey'default x = Just x -- TODO : Why the warning?
+*** (awaiting response) add Util.sort to the List module
+  https://mail.google.com/mail/u/0/#sent/KtbxLvHkVTXWJFRfxzwlKdBtLNPMLtGMcL
+** major
+*** force full evaluation of index immediately
+*** use ordinary hard-disk files rather than Rslt.Files
+* some Curry functions I might need
+** Hex-formatting a number
+showInt 'x' Nothing (Just 1) (Just 1) 31
+* pitfall & solved, I think
+** ? conflicting definitions, (supposedly) in standard library
+*** It happens if I import two libraries, unqualified, that define the same name
+*** example
+**** if I add this line to All.curry:
+ import List as M
+**** then I get these errors
+ /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/List.icurry, line 6.1: Error:
+     Multiple exports of name `delete' at:
+       line 6.1
+       line 4.1
 
-/home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/List.icurry, line 49.1: Error:
-    Multiple exports of name `sortBy' at:
-      line 49.1
-      line 17.1
-** Index.exprImgKey'default x = Just x -- TODO : Why the warning?
-* major
-** force full evaluation of index immediately
-** use ordinary hard-disk files rather than Rslt.Files
-
+ /home/jeff/logic/curry/install/pakcs-2.0.2/lib/.curry/List.icurry, line 49.1: Error:
+     Multiple exports of name `sortBy' at:
+       line 49.1
+       line 17.1

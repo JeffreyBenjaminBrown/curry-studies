@@ -1,5 +1,5 @@
 * TODO These are chronological
-* getting pakcs
+* apt-getting pakcs (later undone)
 I followed the advice under "Ubuntu" (*not* Debian) here:
 https://packages.ps.informatik.uni-kiel.de/curry/index.html
 
@@ -13,7 +13,7 @@ Same trick:
 cypm update && cypm install currypp
 * apt remove pakcs
 * install from pakcs-2.0.2-amd64-Linux.tar.gz
-uncompress, make, then add bin/ to PATHx
+uncompress, make, then add bin/ to PATH
 ** following advice here:
    https://stackoverflow.com/questions/53357361/specifying-default-rules-in-the-curry-language-why-and-how/53367863#comment93722810_53367863
    https://www.informatik.uni-kiel.de/~pakcs/download.html

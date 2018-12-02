@@ -1,8 +1,18 @@
 * to do
 ** features
 *** query the db
-**** datalog-style conditioning
-Every variable in a valid query must appear in an "immediate condition query", a "such-that query", or in a sub-call to some other valid query. 
+**** query types
+CQuery = (Query, [Condition])
+Query : QImg ImgOfExpr | QRel [CQuery] CQuery
+  .   | QHasMember _   | QHas _                | QHasAt _
+  .   | QAnd [CQuery]  | QOr [CQuery]          | QNot CQuery
+Condition: CVariety Variety
+  .      | AnonVar Int | NamedVar String
+**** a complex query
+(x,y) where "?x #is blue" 
+          & "?x #eats ?y" 
+          & x=("_ #of _" | Par)
+          & y=( has "bird" )
 **** TODO kinds of queries
 ***** TODO nested queries
   "x #eat almonds ##because almonds #have y"
@@ -25,14 +35,15 @@ Every variable in a valid query must appear in an "immediate condition query", a
 ****** 'Show me every Rel of the form "<> #needs oxygen".'
     Do the first two.
     Take their intersection.
-***** such-that queries
+***** TODO such-that queries
 ****** 'Show me every x for which "x #needs oxygen".'
 Use one-jump queries to find every "<> #needs oxygen" Rel.
 Take the first member.
 ***** and, or
 ***** not
 ***** variety
-**** a query type
+**** datalog-style conditioning
+Every variable in a valid query must appear in an "immediate condition query", a "such-that query", or in a sub-call to some other valid query. 
 *** represent rules in the db
 *** Hash
 *** edit a db
@@ -46,6 +57,20 @@ Take the first member.
 *** force full evaluation of index immediately
 *** use ordinary hard-disk files rather than Rslt.Files
 * some Curry functions I might need
+** use &> instead of guards
+These seem to be equivalent:
+
+somethingThatHoldsAt :: Index -> Int -> Addr -> Addr
+somethingThatHoldsAt i pos a0
+  | Just s =:= positionsHeldBy i a0
+    & fElem (RoleMember pos, a) (setRBT2list s)
+  = a where a,s free
+
+aRelUsingTemplate    :: Index -> Addr -> Addr
+aRelUsingTemplate i a0
+  | Just s =:= positionsHeldBy i a0
+    & fElem (RoleTplt, a) (setRBT2list s)
+  = a where a,s free
 ** Hex-formatting a number
 showInt 'x' Nothing (Just 1) (Just 1) 31
 * pitfall & solved, I think

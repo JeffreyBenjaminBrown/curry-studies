@@ -91,19 +91,19 @@ holdsPosition i (r,a) = case positionsIn i a of
 
 -- | = non-deterministic search
 
-somethingThatHolds           :: Index -> Addr -> Addr
+somethingThatHolds   :: Index -> Addr -> Addr
 somethingThatHolds i a0
   | Just s =:= positionsHeldBy i a0
     & fElem (RoleMember _, a) (setRBT2list s)
   = a where a,s free
 
-somethingThatHoldsAtPosition :: Index -> Addr -> Int -> Addr
-somethingThatHoldsAtPosition i a0 pos
+somethingThatHoldsAt :: Index -> Int -> Addr -> Addr
+somethingThatHoldsAt i pos a0
   | Just s =:= positionsHeldBy i a0
     & fElem (RoleMember pos, a) (setRBT2list s)
   = a where a,s free
 
-aRelUsingTemplate            :: Index -> Addr -> Addr
+aRelUsingTemplate    :: Index -> Addr -> Addr
 aRelUsingTemplate i a0
   | Just s =:= positionsHeldBy i a0
     & fElem (RoleTplt, a) (setRBT2list s)

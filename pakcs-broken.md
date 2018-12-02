@@ -11,3 +11,7 @@ After installing `pakcs` (from `pakcs-2.0.2-amd64-Linux.tar.gz`), I had made a c
 Then I ran `make clean`, and got no apparent errors[2].
 
 But I still can't `make` the project[3].
+
+[1] https://github.com/JeffreyBenjaminBrown/curry-studies/blob/a59cf8ee1a6d469d4dc06aaf34bbe07f884a9d65/pakcs-broken/first-make.txt
+[2] https://github.com/JeffreyBenjaminBrown/curry-studies/blob/a59cf8ee1a6d469d4dc06aaf34bbe07f884a9d65/pakcs-broken/make-clean.txt
+[3] https://github.com/JeffreyBenjaminBrown/curry-studies/blob/a59cf8ee1a6d469d4dc06aaf34bbe07f884a9d65/pakcs-broken/last-make.txt

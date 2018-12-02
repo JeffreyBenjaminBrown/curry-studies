@@ -1,49 +1,37 @@
+* a simpler model for queries
+** Querying pairs of ints
+type P = (Int,Int)
+PQuery =  PImg [P]  |  PHas Int
+  .    |  PAnd [PQuery]  |  POr [PQuery]
+  .    |  PNot PQuery  |  PVar String  |  PAnonVar Int
+** Querying trees
+data T = T Int [T]
+TQuery: TImg T
+  .  |  THasMember TQuery  |  THas TQuery  |  THasAt TQuery
+  .  |  TAnd [TQuery]  |  TOr [TQuery]
+  .  |  TNot TQuery  |  TVariety Variety  |  TVar String  | TAnonVar Int
 * to do
 ** features
 *** query the db
 **** query types
-CQuery = (Query, [Condition])
-Query : QImg ImgOfExpr | QRel [CQuery] CQuery
-  .   | QHasMember _   | QHas _                | QHasAt _
-  .   | QAnd [CQuery]  | QOr [CQuery]          | QNot CQuery
-Condition: CVariety Variety
-  .      | AnonVar Int | NamedVar String
+Query : QImg ImgOfExpr  |  QRel [Query] Query
+  .  |  QHasMember Query  |  QHas Query  |  QHasAt Query
+  .  |  QAnd [Query]  |  QOr [Query]
+  .  |  QNot Query  |  QVariety Variety  |  QVar String  | QAnonVar Int
+**** "runnability" and datalog-style conditioning
+"Runnable" means "sometimes valid". A user can only run valid Queries, but a Query can be valid even with invalid subqueries.
+QImg        : runnable. Vvalid.
+QRel        : runnable. Vvalid <=> has a valid subQuery (maybe the template).
+QHas*       : runnable. Vvalid <=> has a valid Query.
+QAnd        : runnable. Vvalid <=> has a valid Query.
+QOr         : runnable. Vvalid <=> has only valid Queries.
+QNot, QVariety, \*Var  :  not runnable, not valid.
+**** TODO algorithms (only exist for "runnable" Queries)
 **** a complex query
-(x,y) where "?x #is blue"
+(x,y) where "?x #is blue ##because refraction"
           & "?x #eats ?y"
           & x=("_ #of _" | Par)
-          & y=( has "bird" )
-**** TODO kinds of queries
-***** TODO nested queries
-  "x #eat almonds ##because almonds #have y"
-  Let becauses = Rels of form "<> #because <>"
-      eats = Rels of form "<> #eat almonds"
-      haves = Rels of form "almonds #have <>"
-  Find all b,e,h s.t. b =:= "e #because h",
-                      b in becauses, e in eats, h in haves.
-  Return (member 1 of e, member 2 of h).
-***** one-jump queries
-****** 'Show me every collection involving oxygen.'
-    Find oxygen's `Addr`, "ao".
-    Run `positionsHeldBy index ao` to get a set of `(Role, Addr)`s.
-    Return all those `Addr`s.
-****** 'Show me every Rel using the "<> #needs <>" Tplt.'
-    Find the address "at" of the template "<> needs <>".
-    Run `positionsHeldBy index at` to get a set of `(Role, Addr)`s.
-    Keep only the ones for which the `Role` is a `RoleTplt`.
-    Return all the `Addr`s remaining.
-****** 'Show me every Rel of the form "<> #needs oxygen".'
-    Do the first two.
-    Take their intersection.
-***** TODO such-that queries
-****** 'Show me every x for which "x #needs oxygen".'
-Use one-jump queries to find every "<> #needs oxygen" Rel.
-Take the first member.
-***** and, or
-***** not
-***** variety
-**** datalog-style conditioning
-Every variable in a valid query must appear in an "immediate condition query", a "such-that query", or in a sub-call to some other valid query.
+          & y=( not( has "bird" ) )
 *** represent rules in the db
 *** Hash
 *** edit a db

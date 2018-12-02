@@ -9,8 +9,8 @@ Query : QImg ImgOfExpr | QRel [CQuery] CQuery
 Condition: CVariety Variety
   .      | AnonVar Int | NamedVar String
 **** a complex query
-(x,y) where "?x #is blue" 
-          & "?x #eats ?y" 
+(x,y) where "?x #is blue"
+          & "?x #eats ?y"
           & x=("_ #of _" | Par)
           & y=( has "bird" )
 **** TODO kinds of queries
@@ -19,7 +19,7 @@ Condition: CVariety Variety
   Let becauses = Rels of form "<> #because <>"
       eats = Rels of form "<> #eat almonds"
       haves = Rels of form "almonds #have <>"
-  Find all b,e,h s.t. b =:= "e #because h", 
+  Find all b,e,h s.t. b =:= "e #because h",
                       b in becauses, e in eats, h in haves.
   Return (member 1 of e, member 2 of h).
 ***** one-jump queries
@@ -43,7 +43,7 @@ Take the first member.
 ***** not
 ***** variety
 **** datalog-style conditioning
-Every variable in a valid query must appear in an "immediate condition query", a "such-that query", or in a sub-call to some other valid query. 
+Every variable in a valid query must appear in an "immediate condition query", a "such-that query", or in a sub-call to some other valid query.
 *** represent rules in the db
 *** Hash
 *** edit a db

@@ -1,11 +1,11 @@
 t
 jeff@jeff-inspiron-2017:~/logic/curry$ pakcs
-  ______      __       _    _    ______   _______     
+  ______      __       _    _    ______   _______
  |  __  |    /  \     | |  / /  |  ____| |  _____|   Portland Aachen Kiel
  | |  | |   / /\ \    | |_/ /   | |      | |_____    Curry System
- | |__| |  / /__\ \   |  _  |   | |      |_____  |   
+ | |__| |  / /__\ \   |  _  |   | |      |_____  |
  |  ____| / ______ \  | | \ \   | |____   _____| |   Version 2.0.2
- |_|     /_/      \_\ |_|  \_\  |______| |_______|   
+ |_|     /_/      \_\ |_|  \_\  |______| |_______|
  ***WITH TYPECLASSES***
 
 Curry2Prolog(swi 7.6) Compiler Environment (Version of 2018-11-16)
@@ -30,4 +30,4 @@ ERROR: i/o error: ERROR: user error: Illegal source program
 Error:
     Preprocessor exited with exit code 1
 ERROR occurred during parsing!
-Prelude> 
+Prelude>

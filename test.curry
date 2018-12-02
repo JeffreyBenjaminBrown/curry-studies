@@ -40,7 +40,7 @@ assign polish = Chuck
 
 team :: (worker, worker)
 team | x /= y = (x,y)
-  where x = assign cut 
+  where x = assign cut
         y = assign polish
 
 last :: [a] -> a

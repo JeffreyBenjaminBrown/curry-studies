@@ -73,7 +73,7 @@ relsWithoutMatchingTplts files index = res where
     Just (ctr, art) -> case ctr of
       Tplt' -> arity e == art
       _         -> False
- 
+
   rels = filterFM (\_ v -> isRel v) files where
     isRel expr = case expr of Rel _ _ -> True
                               _       -> False

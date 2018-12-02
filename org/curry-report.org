@@ -6,7 +6,7 @@ data Person = John | Christine | Alice | Andrew deriving Eq
 mother John = Christine
 solve (mother John == Christine)
 * "free" declarations can be in "let" clasuses, too
-isGrandmother g | let c free in mother (mother c) == g 
+isGrandmother g | let c free in mother (mother c) == g
                 = True
 * `_` = `let x free in x`
 * (=:=) is like (==) without any of the False rules
@@ -21,7 +21,7 @@ fc = fcase () of
 * Appendix A.6: Concurrent Object-Oriented Programming
 ** I don't get it.
 ** use ensureSpine to treat a stream like a list
-*** ref: the Curry Report, appendix A.6 
+*** ref: the Curry Report, appendix A.6
 *** the money quote
  makeAccount s = account 0 (ensureSpine s)
 

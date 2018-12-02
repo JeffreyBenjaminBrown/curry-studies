@@ -1,6 +1,6 @@
 -- | = For experiments
 
-module Test.Hand 
+module Test.Hand
 --  (
 --    fElem
 --  )

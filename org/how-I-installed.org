@@ -18,4 +18,4 @@ uncompress, make, then add bin/ to PATHx
    https://stackoverflow.com/questions/53357361/specifying-default-rules-in-the-curry-language-why-and-how/53367863#comment93722810_53367863
    https://www.informatik.uni-kiel.de/~pakcs/download.html
    https://www.informatik.uni-kiel.de/~pakcs/INSTALL.html
- 
+

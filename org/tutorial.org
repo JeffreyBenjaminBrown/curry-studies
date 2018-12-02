@@ -76,7 +76,7 @@ But I suspect everything is an expression.
 * syntax, true in Haskell too
 ** ! conditions can apply to non-arguments. (In Haskell too.)
  team | x /= y = (x,y)
-   where x = assign Cut 
+   where x = assign Cut
          y = assign Polish
 ** "where clauses" can pertain across function guards (Haskell too)
  a ** b | b >= 0 = accum 1 a b

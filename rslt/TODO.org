@@ -10,6 +10,71 @@ TQuery: TImg T
   .  |  THasMember TQuery  |  THas TQuery  |  THasAt TQuery
   .  |  TAnd [TQuery]  |  TOr [TQuery]
   .  |  TNot TQuery  |  TVariety Variety  |  TVar String  | TAnonVar Int
+** procedural exercises (maybe for Haskell)
+*** queries
+**** results|observations|notes
+***** "not" is always a "does it belong to the collection ..." test
+**** TODO maybe the algorithm
+***** First find a [(candidate, substitution)] for the head expression.
+Build that set from the bottom up.
+Each leaf is either a Word or a Var; either way, done.
+For each QRel in higher generations:
+  Find all candidates, based on the Template.
+  Restrict those candidates, based on fixed members.
+  If any of the QRel's members are variables, then for each candidate, attach a substitution indicating what each variable corresponds to in that particular candidate.
+  Merge deeper variables into that substitution. That is, if any of the fixed members of a candidate are themselves Rels which contain variables, then that fixed member contains a substitution, so merge that with the substitution we developed in the previous step.
+  If ever we merge two incompatible substitutions, then there are no solutions, so abort the rest of the computation.
+***** Work through the (other) constraints.
+Keep the constraints in a queue, not a list.
+Consider the first constraint.
+  If the constraint refers to a still-free variable, put it at the end of the queue. Attach a (Maybe Int) to it, containing the length of the queue. If we reach it again and the queue has the same length, there are no solutions. (This could be more inefficient.)
+  If the constraint includes only bound variables, use it to eliminate some of the head expression candidates.
+**** thought experiments
+***** TODO trouble ! what if a variable is mentioned in two conditions and not the head expression?
+"_ #is ?x" where (not $ x==y) & ("y #eats bugs")
+Nothing in "not $ x == y", nor anything in the head expression, specifies y.
+Therefore "not $ x==y" has to be put on hold.
+"y #eats bugs" does specify y. So:
+
+Find all "_ #is ?x" rels. Call those "is".
+  For each i in is, associate x(i).
+Find all "?y #eats bugs" rels. Call them "es".
+  For each e in es, associate y(e).
+***** "?x #is _ ##because ?y #is _" where (conditions)
+let xs = all "?x #is <>" rels
+let ys = all "?y is <>" rels
+let bs = all "<> #because <>" rels
+keep every b = "x #because y" s.t. x in xs and y in ys.
+keep every remaining b s.t. x and y pass the conditions.
+***** "?x #is _ ##when _  ###because ?y #is _" where (conditions)
+Let xis = all "?x #is _" rels.
+Let ws = all "_ when _" rels.
+Let ws' = those ws for which member 1 is in xis.
+Let
+***** "_ #needs (not("oxygen"))"
+  Too hard to parse. Instead use "_ #needs x" & not(x=="oxygen").
+  Find all the #needs Rels
+  Test that the second thing is not "oxygen".
+***** x where "_ #needs ?x" & not(x == "oxygen")
+  Find ns = all #needs rels.
+    Upon finding each such value n, associate "x of n" = n's second member.
+      (This prevents having to make the same traversal twice.)
+  For the x of each n, test whether it is "oxygen". If not, add to report.
+***** x where "_ #needs ?x" & not("?x #is alive")
+  Find ns = all #needs rels.
+    Upon finding each such value n, associate "x of n" = n's second member.
+      (This prevents having to make the same traversal twice.)
+  Find l2s = all #is rels with member 2 = "alive".
+    Upon finding each such value i, associate "x of i" = i's 1st member.
+  Report (x of ns) - (x of is).
+*** ordinary editing
+insert text.
+delete text: prev word, next word.
+highlight, cut, copy, paste.
+up, down, left, right.
+forward word, backward word.
+search to next, previous.
+*** rslt-specific editing
 * to do
 ** features
 *** query the db

@@ -14,6 +14,8 @@ TQuery: TImg T
 *** queries
 **** results|observations|notes
 ***** "not" is always a "does it belong to the collection ..." test
+**** TODO trouble: need to search in both directions
+Suppose I ask for all descendents of x and y, where y only has a few. If I try to find all descendents of both and take the intersection, it might run out of memory, whereas if I searched the ancestors of each descendent of y, it would complete (assuming they have fewer ancestors).
 **** TODO maybe the algorithm
 ***** First find a [(candidate, substitution)] for the head expression.
 Build that set from the bottom up.
